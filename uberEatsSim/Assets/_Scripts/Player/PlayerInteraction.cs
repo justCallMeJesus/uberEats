@@ -8,12 +8,20 @@ public class PlayerInteraction : MonoBehaviour
     private float interactionHeight = 1;
     private float detectionDistance = 5;
 
+
+    public List<Item> interactableItems = new List<Item>();
+
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
             TryInteract();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+
         }
     }
 

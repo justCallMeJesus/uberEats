@@ -380,6 +380,7 @@
 "Assets/_Scripts/GameManager.cs"
 "Assets/_Scripts/IInteractable.cs"
 "Assets/_Scripts/Item.cs"
+"Assets/_Scripts/Items/ItemPlayerDetector.cs"
 "Assets/_Scripts/ItemSpawnManager.cs"
 "Assets/_Scripts/ObjectFollower.cs"
 "Assets/_Scripts/Player/PlayerInteraction.cs"
