@@ -381,6 +381,12 @@
 "Assets/Scripts/enemy_pathfinding.cs"
 "Assets/Scripts/SpawnItems/master_item_spawn.cs"
 "Assets/Scripts/SpawnItems/TV_spawnlocations.cs"
+"Assets/UnityWarehouseSceneHDRP/Player/Scripts/CameraMove.cs"
+"Assets/UnityWarehouseSceneHDRP/Scene_Warehouse/AnimationSample/Scripts/ForkliftLight.cs"
+"Assets/UnityWarehouseSceneHDRP/Scene_Warehouse/AnimationSample/Scripts/ReachliftLight.cs"
+"Assets/UnityWarehouseSceneHDRP/Scene_Warehouse/AnimationSample/Scripts/SetPosition.cs"
+"Assets/UnityWarehouseSceneHDRP/Scene_Warehouse/AnimationSample/Scripts/Tire.cs"
+"Assets/UnityWarehouseSceneHDRP/Scene_Warehouse/Background/Scripts/Label.cs"
 -langversion:9.0
 /deterministic
 /optimize+
