@@ -11,6 +11,7 @@ public class Item : MonoBehaviour
     [SerializeField] public ItemSO itemSO;
     [SerializeField] private MeshRenderer Visual;
     [SerializeField] private Material highlightMat;
+    [SerializeField] private Material closestHighlightMat;
 
     public List<Shelf> possibleShelves = new List<Shelf>();
     private List<Shelf> selectedShelves = new List<Shelf>();
@@ -69,7 +70,7 @@ public class Item : MonoBehaviour
         DisableHighlight();
     }
 
-    private void EnableHighlight()
+    public void EnableHighlight()
     {
         Material[] newMaterials = new Material[2];
         newMaterials[0] = Visual.material;
@@ -81,6 +82,14 @@ public class Item : MonoBehaviour
     {
         Material[] newMaterials = new Material[1];
         newMaterials[0] = Visual.material;
+        Visual.materials = newMaterials;
+    }
+
+    public void EnanbleClosestHighlight()
+    {
+        Material[] newMaterials = new Material[2];
+        newMaterials[0] = Visual.material;
+        newMaterials[1] = closestHighlightMat;
         Visual.materials = newMaterials;
     }
 

@@ -10,9 +10,10 @@ public class ItemPlayerDetector : MonoBehaviour
     {
         if (other.TryGetComponent(out PlayerInteraction player))
         {
+            Debug.Log("Player entered interaction zone");
             if (CheckItemList())
             {
-                player.interactableItems.Remove(parentItem);
+                player.interactableItems.Add(parentItem);
             }
         }
     }

@@ -11,6 +11,9 @@ public class PlayerInteraction : MonoBehaviour
 
     public List<Item> interactableItems = new List<Item>();
 
+    public Item currentlyHighlightedItem = null;
+    private Item closestItem = null;
+
     // Update is called once per frame
     void Update()
     {
@@ -22,6 +25,22 @@ public class PlayerInteraction : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
 
+        }
+
+        if(FindClosestItem() is Item closestItem)
+        {
+            if(currentlyHighlightedItem != closestItem)
+            {
+                if(currentlyHighlightedItem != null) { currentlyHighlightedItem.EnableHighlight(); }
+                currentlyHighlightedItem = closestItem;
+                closestItem.EnanbleClosestHighlight();
+            }
+            
+        }
+        else if(currentlyHighlightedItem != null)
+        {
+            currentlyHighlightedItem.EnableHighlight();
+            currentlyHighlightedItem = null;
         }
     }
 
@@ -59,6 +78,48 @@ public class PlayerInteraction : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject);
+    }
+
+    // A method to find and return the closest GameObject
+    public Item FindClosestItem()
+    {
+        // Check if the list is empty or if the player reference is missing
+        if (interactableItems == null || interactableItems.Count == 0 || interactableItems == null)
+        {
+            return null;
+        }
+
+        Item closestObject = null;
+        float minDistance = Mathf.Infinity; // Initialize with a very large number
+
+        // Get the player's position once for efficiency
+        Vector3 playerPosition = transform.position;
+
+        // Iterate through all potential targets
+        foreach (Item target in interactableItems)
+        {
+            // Ensure the target is valid (not null)
+            if (target == null)
+            {
+                continue;
+            }
+
+            // 1. Calculate the squared distance. 
+            //    Squared distance (Vector3.sqrMagnitude) is faster than regular distance (Vector3.Distance or Vector3.magnitude) 
+            //    because it avoids calculating the square root. We only care about comparing *relative* distances.
+            float currentDistanceSquared = (target.transform.position - playerPosition).sqrMagnitude;
+
+            // 2. Check if this distance is the smallest one found so far
+            if (currentDistanceSquared < minDistance)
+            {
+                // 3. Update the minimum distance and store a reference to the closest object
+                minDistance = currentDistanceSquared;
+                closestObject = target;
+            }
+        }
+
+        // Return the object that had the smallest distance
+        return closestObject;
     }
 
 }

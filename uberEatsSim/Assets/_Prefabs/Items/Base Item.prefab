@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 011b4713c2c5f944aaf4fafab7e1702d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parentItem: {fileID: 5088047501485374170}
 --- !u!136 &4260484420054762505
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -60,7 +61,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -201,6 +202,7 @@ MonoBehaviour:
   itemSO: {fileID: 0}
   Visual: {fileID: 984521304749007624}
   highlightMat: {fileID: 2100000, guid: c724aa453053bed4591f15dca7800c02, type: 2}
+  closestHighlightMat: {fileID: 2100000, guid: 19c14d4c34f746947973aee434f8e5dd, type: 2}
   possibleShelves:
   - {fileID: 0}
 --- !u!135 &-7295709357314168937
