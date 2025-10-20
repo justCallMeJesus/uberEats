@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private float interactionDistance = 5f;
     private float interactionHeight = 1;
+    private float detectionDistance = 5;
 
     // Update is called once per frame
     void Update()
@@ -41,6 +42,16 @@ public class PlayerInteraction : MonoBehaviour
         vehicle.EnterVehicle(this.gameObject);
     }
 
+    private void CheckForItemsInRadius()
+    {
+       // Physics.SphereCastAll(transform.position, detectionDistance)
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.gameObject);
+    }
 
 }
 

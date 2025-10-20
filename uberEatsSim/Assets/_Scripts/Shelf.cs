@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class Shelf : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public ShelfSO shelfSO;
+
+    protected static HashSet<Item> possibleItems = new HashSet<Item>();
+
+    protected static HashSet<Item> spawnedItems = new HashSet<Item>();
+
+    public bool shelfChoosen = false;
+
+    public bool shelfFull = false;
+
+
+
+    [SerializeField] protected GameObject[] spawnPoints;
+
+    private void Awake()
+    {
+        //possibleItems = new HashSet<Item>(shelfSO.items);
+
+       // possibleItems.UnionWith(shelfSO.items);
+    }
+
+    public virtual void SpawnItem(Item item)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public virtual void FillEmptyShelf()
     {
-        
+
     }
 }

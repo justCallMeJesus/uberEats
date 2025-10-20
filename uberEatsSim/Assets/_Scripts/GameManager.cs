@@ -5,28 +5,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public List<Item> items = new List<Item>(); 
 
-    private List<Item> selectedItems = new List<Item>();
 
-    private int amountToSelect = 3;
+    public List<Item> selectedItems = new List<Item>();
+
+    public static GameManager Instance;
+
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-
-        for (int i = 0; i < amountToSelect; i++)
-        {
-            int randomIndex = Random.Range(0, items.Count);
-
-            // 2. Access the element at that random index.
-            Item randomItem = items[randomIndex];
-
-            items.Remove(randomItem);
-
-            selectedItems.Add(randomItem);
-        }
-        
+        Instance = this;
     }
 
     // Update is called once per frame
