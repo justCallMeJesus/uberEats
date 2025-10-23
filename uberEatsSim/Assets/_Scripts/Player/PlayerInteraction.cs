@@ -14,6 +14,9 @@ public class PlayerInteraction : MonoBehaviour
     public Item currentlyHighlightedItem = null;
     private Item closestItem = null;
 
+    private float pickupTime = 3f;
+    private float timeHeld = 0f;
+
     // Update is called once per frame
     void Update()
     {
@@ -22,26 +25,17 @@ public class PlayerInteraction : MonoBehaviour
             TryInteract();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
-
+            TryPickUp();
         }
-
-        if(FindClosestItem() is Item closestItem)
+        else if (Input.GetKeyUp(KeyCode.Space))
         {
-            if(currentlyHighlightedItem != closestItem)
-            {
-                if(currentlyHighlightedItem != null) { currentlyHighlightedItem.EnableHighlight(); }
-                currentlyHighlightedItem = closestItem;
-                closestItem.EnanbleClosestHighlight();
-            }
-            
+            Debug.Log("Space released");
+            timeHeld = 0f;
         }
-        else if(currentlyHighlightedItem != null)
-        {
-            currentlyHighlightedItem.EnableHighlight();
-            currentlyHighlightedItem = null;
-        }
+        HighlightClosestItemInRange();
+        
     }
 
     private void TryInteract()
@@ -61,6 +55,21 @@ public class PlayerInteraction : MonoBehaviour
                 VehicleInteraction(vehicle);
             }
 
+        }
+    }
+
+    private void TryPickUp()
+    {
+        if(currentlyHighlightedItem != null)
+        {
+            Debug.Log("picking up");
+            timeHeld += Time.deltaTime;
+            if (timeHeld > pickupTime)
+            {
+                Destroy(currentlyHighlightedItem.gameObject);
+                timeHeld = 0f;
+            }
+            
         }
     }
 
@@ -120,6 +129,25 @@ public class PlayerInteraction : MonoBehaviour
 
         // Return the object that had the smallest distance
         return closestObject;
+    }
+
+    private void HighlightClosestItemInRange()
+    {
+        if (FindClosestItem() is Item closestItem)
+        {
+            if (currentlyHighlightedItem != closestItem)
+            {
+                if (currentlyHighlightedItem != null) { currentlyHighlightedItem.EnableHighlight(); }
+                currentlyHighlightedItem = closestItem;
+                closestItem.EnanbleClosestHighlight();
+            }
+
+        }
+        else if (currentlyHighlightedItem != null)
+        {
+            currentlyHighlightedItem.EnableHighlight();
+            currentlyHighlightedItem = null;
+        }
     }
 
 }
