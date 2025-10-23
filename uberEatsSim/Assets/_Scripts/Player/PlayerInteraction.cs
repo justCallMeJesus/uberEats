@@ -64,7 +64,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("picking up");
             timeHeld += Time.deltaTime;
-            if (timeHeld > pickupTime)
+            if (timeHeld > currentlyHighlightedItem.itemSO.pickupTime)
             {
                 Destroy(currentlyHighlightedItem.gameObject);
                 timeHeld = 0f;

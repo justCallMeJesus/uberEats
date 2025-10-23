@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7971420917837969306}
   - component: {fileID: 2145445743398937608}
   - component: {fileID: 4260484420054762505}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InteractionDistance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 5999978805449858039}
   - component: {fileID: 7525236225355548845}
   - component: {fileID: 984521304749007624}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 192402713069428363}
   - component: {fileID: 5088047501485374170}
   - component: {fileID: -7295709357314168937}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}

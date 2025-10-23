@@ -15,3 +15,4 @@ MonoBehaviour:
   name: Bacardi Raspberry
   value: 20
   type: 1
+  pickupTime: 0.7

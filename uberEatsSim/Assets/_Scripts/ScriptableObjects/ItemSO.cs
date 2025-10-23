@@ -17,5 +17,7 @@ public class ItemSO : ScriptableObject
     public float value;
 
     public ItemType type;
+
+    public float pickupTime;
     
 }
