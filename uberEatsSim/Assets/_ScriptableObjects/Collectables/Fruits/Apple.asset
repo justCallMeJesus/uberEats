@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   name: Apple
+  multiplesName: Apples
   value: 0.5
   type: 0
-  pickupTime: 0.1
+  pickupTime: 0.3

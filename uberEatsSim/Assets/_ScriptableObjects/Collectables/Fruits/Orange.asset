@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Orange
   m_EditorClassIdentifier: 
   name: Orange
+  multiplesName: Oranges
   value: 0.6
   type: 0
-  pickupTime: 0.1
+  pickupTime: 0.3

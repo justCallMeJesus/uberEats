@@ -53,5 +53,12 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    public bool IsMoving()
+    {
+        return gameInput.playerInputActions.Player.Movement.ReadValue<Vector2>() != Vector2.zero;
+    }
+
+
+
     
 }

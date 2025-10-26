@@ -78,14 +78,14 @@ public class Item : MonoBehaviour
         Visual.materials = newMaterials;
     }
 
-    private void DisableHighlight()
+    public void DisableHighlight()
     {
         Material[] newMaterials = new Material[1];
         newMaterials[0] = Visual.material;
         Visual.materials = newMaterials;
     }
 
-    public void EnanbleClosestHighlight()
+    public void EnableClosestHighlight()
     {
         Material[] newMaterials = new Material[2];
         newMaterials[0] = Visual.material;
@@ -95,18 +95,8 @@ public class Item : MonoBehaviour
 
     public bool CheckItemList()
     {
-        bool matchFound = GameManager.Instance.selectedItems.Any(item => item.itemSO == this.itemSO);
+        // check if selectedItems has an item with same itemSO as this items ItemSO
+        bool matchFound = GameManager.Instance.selectedItems.Any(selectedItem => selectedItem.item.itemSO == this.itemSO);
         return matchFound;
-
-        //foreach(Item item in GameManager.Instance.selectedItems)
-        //{
-        //    if(item.itemSO == itemSO)
-        //    {
-        //        Debug.Log(itemSO );
-        //        Debug.Log(item.itemSO);
-        //        return true;
-        //    }
-        //}
-        //return false;
     }
 }

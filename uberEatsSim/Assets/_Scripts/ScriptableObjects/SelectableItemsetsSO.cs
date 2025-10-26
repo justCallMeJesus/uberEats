@@ -16,10 +16,16 @@ public class SelectableItemsetsSO : ScriptableObject
 
         public int amount;
 
-        public ItemSet(ShelfSO shelfSO, int amount)
+        public int minimumPerItem;
+
+        public int maximumPerItem;
+
+        public ItemSet(ShelfSO shelfSO, int amount, int minimumPerItem, int maximumPerItem)
         {
             this.shelfSO = shelfSO;
             this.amount = amount;
+            this.minimumPerItem = minimumPerItem;
+            this.maximumPerItem = maximumPerItem;
         }
     }
 

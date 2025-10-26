@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Banana
   m_EditorClassIdentifier: 
   name: Banana
+  multiplesName: Bananas
   value: 0.5
   type: 0
-  pickupTime: 0.1
+  pickupTime: 0.3

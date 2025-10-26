@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Jack & Daniels
   m_EditorClassIdentifier: 
   name: Jack & Daniels
+  multiplesName: Jack & Daniels
   value: 35
   type: 1
   pickupTime: 0.7

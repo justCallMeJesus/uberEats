@@ -22,10 +22,4 @@ public class Scooter : Vehicle
     {
         base.Update();
     }
-
-
-
-    
-
-
 }

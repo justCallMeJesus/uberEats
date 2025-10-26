@@ -14,6 +14,8 @@ public class ItemSO : ScriptableObject
 
     public new string name;
 
+    public string multiplesName;
+
     public float value;
 
     public ItemType type;

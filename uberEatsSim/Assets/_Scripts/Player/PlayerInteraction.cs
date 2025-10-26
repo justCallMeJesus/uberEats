@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
+using static ItemSO;
 
 public class PlayerInteraction : MonoBehaviour
 {
@@ -16,6 +19,24 @@ public class PlayerInteraction : MonoBehaviour
 
     private float pickupTime = 3f;
     private float timeHeld = 0f;
+
+    private Player player;
+
+    private void Start()
+    {
+        player = GetComponent<Player>();
+        GameManager.Instance.OnItemTypeCollected += Instance_OnItemTypeCollected;
+    }
+
+    private void Instance_OnItemTypeCollected(GameManager.SelectedItems completedItem)
+    {
+        List<Item> itemsToRemove = interactableItems.Where(item => item.itemSO == completedItem.item.itemSO).ToList();
+        foreach (Item itemToRemove in itemsToRemove)
+        {
+            interactableItems.Remove(itemToRemove);
+            itemToRemove.DisableHighlight();
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -35,6 +56,11 @@ public class PlayerInteraction : MonoBehaviour
             timeHeld = 0f;
         }
         HighlightClosestItemInRange();
+
+        if (player.playerMovement.IsMoving())
+        {
+            timeHeld = 0f;  
+        }
         
     }
 
@@ -66,6 +92,8 @@ public class PlayerInteraction : MonoBehaviour
             timeHeld += Time.deltaTime;
             if (timeHeld > currentlyHighlightedItem.itemSO.pickupTime)
             {
+                GameManager.Instance.ReduceItemCount(currentlyHighlightedItem);
+                interactableItems.Remove(currentlyHighlightedItem);
                 Destroy(currentlyHighlightedItem.gameObject);
                 timeHeld = 0f;
             }
@@ -75,7 +103,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void VehicleInteraction(Vehicle vehicle)
     {
-        vehicle.EnterVehicle(this.gameObject);
+        vehicle.EnterVehicle(player);
     }
 
     private void CheckForItemsInRadius()
@@ -133,22 +161,29 @@ public class PlayerInteraction : MonoBehaviour
 
     private void HighlightClosestItemInRange()
     {
+        // check if closest item is an item and set it to closest item
         if (FindClosestItem() is Item closestItem)
         {
+            // check if closest item is currently not the highlighted item
             if (currentlyHighlightedItem != closestItem)
             {
+                // if currentlyHighlightedItem is not null, enable normal highlight
                 if (currentlyHighlightedItem != null) { currentlyHighlightedItem.EnableHighlight(); }
-                currentlyHighlightedItem = closestItem;
-                closestItem.EnanbleClosestHighlight();
-            }
 
+                // set currentlyHighlightedItem as new closest item and enable its red highlight
+                currentlyHighlightedItem = closestItem;
+                closestItem.EnableClosestHighlight();
+            }
         }
         else if (currentlyHighlightedItem != null)
         {
+            // if not closestItem found but currentlyHighlightedItem is not null, enable its normal highlight and set red highlight to null
             currentlyHighlightedItem.EnableHighlight();
             currentlyHighlightedItem = null;
         }
     }
+
+    
 
 }
 

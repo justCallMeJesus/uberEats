@@ -15,5 +15,9 @@ MonoBehaviour:
   itemSets:
   - shelfSO: {fileID: 11400000, guid: ab5d21b30bdf6b941badb6b2c888361a, type: 2}
     amount: 2
+    minimumPerItem: 1
+    maximumPerItem: 5
   - shelfSO: {fileID: 11400000, guid: 8e41288cfdd6ea74a8821aa35511156e, type: 2}
     amount: 1
+    minimumPerItem: 1
+    maximumPerItem: 2

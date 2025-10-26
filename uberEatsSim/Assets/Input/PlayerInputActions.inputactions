@@ -185,6 +185,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "GeneralInGame",
+            "id": "6b67295f-9fe7-4025-8117-8651039387c0",
+            "actions": [
+                {
+                    "name": "OpenList",
+                    "type": "Button",
+                    "id": "40d7c0ca-ca2e-4ca9-a935-498a0b137135",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a8ad52fc-9aca-48c4-a75d-1b51084cd8bd",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenList",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

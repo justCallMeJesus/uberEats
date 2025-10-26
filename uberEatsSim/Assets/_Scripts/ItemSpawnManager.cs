@@ -14,6 +14,8 @@ public class ItemSpawnManager : MonoBehaviour
 
     public List<Item> selectedItems = new List<Item>();
 
+    [SerializeField] private ItemCollectorUI itemCollectorUI;
+
     private void Start()
     {
         shelves = FindObjectsOfType<Shelf>();
@@ -35,15 +37,35 @@ public class ItemSpawnManager : MonoBehaviour
 
     private void SelectItemsFromCollection()
     {
+
         foreach (var itemSet in collection.itemSets)
         {
+            // foreach category in the collection of category
             for (int i = 0; i < itemSet.amount; i++)
             {
+                // for the amount if needed items of that category
+                // add all items that are not yet in the selectedItems
                 List<Item> availableItems = itemSet.shelfSO.items.Where(item => !selectedItems.Contains(item)).ToList();
-                selectedItems.Add(availableItems[Random.Range(0, availableItems.Count)]);               
+
+                // select random item from availableItems
+                Item selectedItem = availableItems[Random.Range(0, availableItems.Count)];
+
+                // add that item to list
+                selectedItems.Add(selectedItem);
+                
+                int amount = Random.Range(itemSet.minimumPerItem, itemSet.maximumPerItem + 1);
+                GameManager.Instance.selectedItems.Add(new GameManager.SelectedItems { item = selectedItem, count = amount });
+
+                ItemCollectorUI.ItemData newItem = new ItemCollectorUI.ItemData
+                {
+                    itemName = selectedItem,
+                    requiredCount = amount,
+        
+                };
+                itemCollectorUI.AddItemRequirement(newItem);
             }
         }
-        GameManager.Instance.selectedItems = this.selectedItems;
+        //GameManager.Instance.selectedItems = this.selectedItems;
     }
 
     private void SpawnSelectedItems()

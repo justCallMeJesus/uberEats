@@ -271,6 +271,34 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""GeneralInGame"",
+            ""id"": ""6b67295f-9fe7-4025-8117-8651039387c0"",
+            ""actions"": [
+                {
+                    ""name"": ""OpenList"",
+                    ""type"": ""Button"",
+                    ""id"": ""40d7c0ca-ca2e-4ca9-a935-498a0b137135"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a8ad52fc-9aca-48c4-a75d-1b51084cd8bd"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenList"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -283,12 +311,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Vehicle = asset.FindActionMap("Vehicle", throwIfNotFound: true);
         m_Vehicle_Movement = m_Vehicle.FindAction("Movement", throwIfNotFound: true);
         m_Vehicle_Exit = m_Vehicle.FindAction("Exit", throwIfNotFound: true);
+        // GeneralInGame
+        m_GeneralInGame = asset.FindActionMap("GeneralInGame", throwIfNotFound: true);
+        m_GeneralInGame_OpenList = m_GeneralInGame.FindAction("OpenList", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerInputActions.Player.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_Vehicle.enabled, "This will cause a leak and performance issues, PlayerInputActions.Vehicle.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_GeneralInGame.enabled, "This will cause a leak and performance issues, PlayerInputActions.GeneralInGame.Disable() has not been called.");
     }
 
     /// <summary>
@@ -574,6 +606,102 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     /// Provides a new <see cref="VehicleActions" /> instance referencing this action map.
     /// </summary>
     public VehicleActions @Vehicle => new VehicleActions(this);
+
+    // GeneralInGame
+    private readonly InputActionMap m_GeneralInGame;
+    private List<IGeneralInGameActions> m_GeneralInGameActionsCallbackInterfaces = new List<IGeneralInGameActions>();
+    private readonly InputAction m_GeneralInGame_OpenList;
+    /// <summary>
+    /// Provides access to input actions defined in input action map "GeneralInGame".
+    /// </summary>
+    public struct GeneralInGameActions
+    {
+        private @PlayerInputActions m_Wrapper;
+
+        /// <summary>
+        /// Construct a new instance of the input action map wrapper class.
+        /// </summary>
+        public GeneralInGameActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        /// <summary>
+        /// Provides access to the underlying input action "GeneralInGame/OpenList".
+        /// </summary>
+        public InputAction @OpenList => m_Wrapper.m_GeneralInGame_OpenList;
+        /// <summary>
+        /// Provides access to the underlying input action map instance.
+        /// </summary>
+        public InputActionMap Get() { return m_Wrapper.m_GeneralInGame; }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+        public void Enable() { Get().Enable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+        public void Disable() { Get().Disable(); }
+        /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+        public bool enabled => Get().enabled;
+        /// <summary>
+        /// Implicitly converts an <see ref="GeneralInGameActions" /> to an <see ref="InputActionMap" /> instance.
+        /// </summary>
+        public static implicit operator InputActionMap(GeneralInGameActions set) { return set.Get(); }
+        /// <summary>
+        /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <param name="instance">Callback instance.</param>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+        /// </remarks>
+        /// <seealso cref="GeneralInGameActions" />
+        public void AddCallbacks(IGeneralInGameActions instance)
+        {
+            if (instance == null || m_Wrapper.m_GeneralInGameActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_GeneralInGameActionsCallbackInterfaces.Add(instance);
+            @OpenList.started += instance.OnOpenList;
+            @OpenList.performed += instance.OnOpenList;
+            @OpenList.canceled += instance.OnOpenList;
+        }
+
+        /// <summary>
+        /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+        /// </summary>
+        /// <remarks>
+        /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+        /// </remarks>
+        /// <seealso cref="GeneralInGameActions" />
+        private void UnregisterCallbacks(IGeneralInGameActions instance)
+        {
+            @OpenList.started -= instance.OnOpenList;
+            @OpenList.performed -= instance.OnOpenList;
+            @OpenList.canceled -= instance.OnOpenList;
+        }
+
+        /// <summary>
+        /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="GeneralInGameActions.UnregisterCallbacks(IGeneralInGameActions)" />.
+        /// </summary>
+        /// <seealso cref="GeneralInGameActions.UnregisterCallbacks(IGeneralInGameActions)" />
+        public void RemoveCallbacks(IGeneralInGameActions instance)
+        {
+            if (m_Wrapper.m_GeneralInGameActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        /// <summary>
+        /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+        /// </summary>
+        /// <remarks>
+        /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+        /// </remarks>
+        /// <seealso cref="GeneralInGameActions.AddCallbacks(IGeneralInGameActions)" />
+        /// <seealso cref="GeneralInGameActions.RemoveCallbacks(IGeneralInGameActions)" />
+        /// <seealso cref="GeneralInGameActions.UnregisterCallbacks(IGeneralInGameActions)" />
+        public void SetCallbacks(IGeneralInGameActions instance)
+        {
+            foreach (var item in m_Wrapper.m_GeneralInGameActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_GeneralInGameActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    /// <summary>
+    /// Provides a new <see cref="GeneralInGameActions" /> instance referencing this action map.
+    /// </summary>
+    public GeneralInGameActions @GeneralInGame => new GeneralInGameActions(this);
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "Player" which allows adding and removing callbacks.
     /// </summary>
@@ -617,5 +745,20 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnExit(InputAction.CallbackContext context);
+    }
+    /// <summary>
+    /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "GeneralInGame" which allows adding and removing callbacks.
+    /// </summary>
+    /// <seealso cref="GeneralInGameActions.AddCallbacks(IGeneralInGameActions)" />
+    /// <seealso cref="GeneralInGameActions.RemoveCallbacks(IGeneralInGameActions)" />
+    public interface IGeneralInGameActions
+    {
+        /// <summary>
+        /// Method invoked when associated input action "OpenList" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnOpenList(InputAction.CallbackContext context);
     }
 }

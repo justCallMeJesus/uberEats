@@ -35,6 +35,7 @@ public class GuardAI : MonoBehaviour
 
     [Header("Field of view settings")]
     [SerializeField] private float fovDistance = 2.3f;
+    [SerializeField] private float blindSightDistance = 0.4f;
     [SerializeField][Range(0, 360)] private float fovAngle;
     [SerializeField] private LayerMask ignoreMask;
 
@@ -170,6 +171,7 @@ public class GuardAI : MonoBehaviour
         {
             ChangeAlertState(AlertState.Alerted);
             alertLevel = alertLevel = 100;
+            StopCoroutine(WanderingSearchCoroutine());
         }
         agent.isStopped = false;
         if (!agent.pathPending && agent.remainingDistance <= 0.5f)
@@ -265,10 +267,16 @@ public class GuardAI : MonoBehaviour
     private bool PlayerInFOV()
     {
         Collider[] targetsInFOV = Physics.OverlapSphere(transform.position, fovDistance);
+        
         foreach (Collider target in targetsInFOV)
         {
             if (target.CompareTag("Player"))
             {
+                float distance = Vector3.Distance(transform.position, target.transform.position);
+                if(distance < blindSightDistance)
+                {
+                    return true;
+                }
                 float signedAngle = Vector3.Angle(transform.forward, target.transform.position - transform.position);
                 if (Mathf.Abs(signedAngle) < fovAngle / 2 && Physics.Raycast(transform.position + raycastOffset, target.transform.position - transform.position, out RaycastHit hit, fovDistance, ~ignoreMask))
                 {

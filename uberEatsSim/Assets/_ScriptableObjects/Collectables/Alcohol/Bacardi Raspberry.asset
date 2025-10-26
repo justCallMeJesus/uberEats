@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Bacardi Raspberry
   m_EditorClassIdentifier: 
   name: Bacardi Raspberry
+  multiplesName: Bacardi Raspberries
   value: 20
   type: 1
   pickupTime: 0.7

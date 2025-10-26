@@ -12,11 +12,11 @@ public class Vehicle : MonoBehaviour, IInteractable
     protected Vector3 interacterPositionOffset = Vector3.zero;
 
     private GameInput gameInput;
-    private GameObject interacter;
+    protected Player interacter;
     private CharacterController cc;
 
     // Start is called before the first frame update
-    void Start()
+    protected void Start()
     {
         gameInput = GameInput.instance;
         cc = GetComponent<CharacterController>();
@@ -29,16 +29,18 @@ public class Vehicle : MonoBehaviour, IInteractable
         if (gameInput.playerInputActions.Vehicle.enabled && interacter != null)
         {
             MoveVehicle();
+            Debug.Log("moveVehicle");
 
         }
     }
 
-    public void EnterVehicle(GameObject interacter)
+    public void EnterVehicle(Player interacter)
     {
         interacter.transform.position = transform.position + interacterPositionOffset;
         interacter.transform.rotation = transform.rotation;
         interacter.transform.SetParent(transform);
         this.interacter = interacter;
+        interacter.PlayerColliderEnabled(false);
         GameInput.instance.EnableVehicleControls();
 
         gameInput.playerInputActions.Vehicle.Exit.performed += Exit_performed;
@@ -48,6 +50,7 @@ public class Vehicle : MonoBehaviour, IInteractable
     {
         gameInput.playerInputActions.Vehicle.Exit.performed -= Exit_performed;
         interacter.transform.SetParent(null);
+        interacter.PlayerColliderEnabled(true);
         this.interacter = null;
         GameInput.instance.DisableVehicleControls();
     }
