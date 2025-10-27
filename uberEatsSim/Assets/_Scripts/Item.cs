@@ -25,7 +25,7 @@ public class Item : MonoBehaviour
     void Start()
     {
         //Item thisItem = this;
-        possibleShelves = FindObjectsOfType<Shelf>().Where(shelf => shelf.shelfSO.items.Contains(this)).ToList();
+        //possibleShelves = FindObjectsOfType<Shelf>().Where(shelf => shelf.shelfSO.items.Contains(this)).ToList();
         
     }
 

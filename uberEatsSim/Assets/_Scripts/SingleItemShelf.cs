@@ -47,7 +47,7 @@ public class SingleItemShelf : Shelf
     public override void FillEmptyShelf()
     {
         Debug.Log("Fill empty shelf randomly" +  this.gameObject);
-        if (!shelfFull)
+        if (!shelfFull && shelfSO != null)
         {
             selectedItem = ChooseRandomAvailableItem();
             if(selectedItem != null)

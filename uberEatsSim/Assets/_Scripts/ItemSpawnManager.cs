@@ -72,7 +72,7 @@ public class ItemSpawnManager : MonoBehaviour
     {
         foreach(Item item in selectedItems)
         {
-            List<Shelf> itemSpecificShelfs = FindObjectsOfType<Shelf>().Where(shelf => shelf.shelfSO.items.Contains(item) && shelf.shelfChoosen == false).ToList();
+            List<Shelf> itemSpecificShelfs = FindObjectsOfType<Shelf>().Where(shelf => shelf.shelfSO != null && shelf.shelfSO.items.Contains(item) && shelf.shelfChoosen == false).ToList();
             itemSpecificShelfs[Random.Range(0, itemSpecificShelfs.Count)].SpawnItem(item);
         }
     }
