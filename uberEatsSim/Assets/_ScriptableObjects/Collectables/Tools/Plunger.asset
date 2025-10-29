@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Plunger
   multiplesName: Plungers
-  value: 8
+  priority: 1
   type: 2
   pickupTime: 0.7

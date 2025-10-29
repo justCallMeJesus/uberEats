@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Bucket
   multiplesName: Buckets
-  value: 15
+  priority: 1
   type: 2
   pickupTime: 1.1

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Flashlight
   multiplesName: Flashlights
-  value: 25
+  priority: 1
   type: 2
   pickupTime: 0.5

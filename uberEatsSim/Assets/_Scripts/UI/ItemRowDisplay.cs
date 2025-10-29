@@ -10,20 +10,29 @@ public class ItemRowDisplay : MonoBehaviour
     public TextMeshProUGUI requiredCountText;
 
     private Item displayedItem = null;
+    private GameManager gameManager;
 
     /// <summary>
     /// Sets the text for the item name and the required count upon creation.
     /// </summary>
     /// 
-    private void Start()
+    private void OnEnable()
     {
-        GameManager.Instance.OnItemTypeCollected += Instance_OnItemTypeCollected;
+        gameManager = GameManager.Instance;
+        gameManager.OnItemTypeCollected += Instance_OnItemTypeCollected;
+    }
+
+    private void OnDestroy()
+    {
+        gameManager.OnItemTypeCollected -= Instance_OnItemTypeCollected;
     }
 
     private void Instance_OnItemTypeCollected(GameManager.SelectedItems itemType)
     {
+        Debug.Log("Item completion event called");
         if(displayedItem.itemSO == itemType.item.itemSO)
         {
+            Debug.Log("Item completion crossed out called");
             CrossOutItem();
         }
     }

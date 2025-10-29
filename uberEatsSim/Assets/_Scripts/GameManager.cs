@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using static ItemSO;
@@ -8,12 +9,23 @@ using static ItemSO;
 public class GameManager : MonoBehaviour
 {
 
-
+    private List<SelectedItems> originalSelectedItems = new List<SelectedItems>();
     public List<SelectedItems> selectedItems = new List<SelectedItems>();
+
+  
 
     public static GameManager Instance;
 
     public event Action<SelectedItems> OnItemTypeCollected;
+
+    public float timeElapsed;
+    private float givenTime;
+
+    [Header("Time Settings")]
+    [SerializeField] private float standardStartTime = 30f;
+    [SerializeField] private float addonTimePerItem = 5f;
+    [SerializeField] private float timePenaltyNormalizer = 3f;
+
 
     [Serializable]
     public struct SelectedItems
@@ -71,6 +83,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ItemsSelected()
+    {
+        originalSelectedItems = selectedItems;
+        givenTime = standardStartTime + addonTimePerItem * selectedItems.Count;
+    }
+
     private void RemoveItemFromList(int index)
     {
         // Use RemoveAt since we already have the index
@@ -87,5 +105,99 @@ public class GameManager : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    public int GetMissedPriority()
+    {
+        int missedPririty = 0;
+        foreach(SelectedItems item in selectedItems)
+        {
+            missedPririty += item.item.itemSO.priority * item.count;
+        }
+
+        return missedPririty;
+    }
+
+    private int CalculateTimePenalty()
+    {
+        int penalty = 0;
+        float timeOverdrawn = 0;
+        timeOverdrawn = givenTime - timeElapsed;
+        if( timeOverdrawn > 0)
+        {
+            return 0;
+        }
+        penalty = Mathf.Abs(Mathf.RoundToInt(timeOverdrawn / timePenaltyNormalizer));
+        return penalty;
+        
+    }
+
+    private int CalculateMissedItemsPenalty()
+    {
+        int penalty = 0;
+        foreach (SelectedItems item in selectedItems)
+        {
+            penalty += item.item.itemSO.priority * item.count;
+        }
+        return penalty;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            Debug.Log(CalculateTimePenalty());
+            PlayerCaught();
+        }
+
+        timeElapsed = Time.time;
+        
+    }
+
+    public void PlayerCaught()
+    {
+        int previousGrandmaAngriness = 80;
+        int timePenalty = CalculateTimePenalty();
+        int missedItemPenalty = CalculateMissedItemsPenalty();
+        int caughtPenalty = 20;
+        int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty - caughtPenalty;
+        if(newGrandmaAngriness < 0)
+        {
+            newGrandmaAngriness = 0;
+
+            // game over
+        }
+        // disable player controls
+        GameInput.instance.DisableControls();
+        // fade in player caught screen
+        UIManager.Instance.ShowCaughtScreen();
+
+        StartCoroutine(BlendInInfoScreen(previousGrandmaAngriness, timePenalty, missedItemPenalty, caughtPenalty, newGrandmaAngriness));
+        // update angryness scale
+        // blend in next button
+        // load next scene
+    }
+
+    private IEnumerator BlendInInfoScreen(int prevAngriness, int timePenalty, int missedItemPenalty, int caughtPenalty, int newAngriness)
+    {
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowPreviousAngrinessScale(prevAngriness);
+
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowTimePenalty(timePenalty);
+
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowMissedItemPenalty(missedItemPenalty);
+
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowCaughtPenalty(caughtPenalty);
+
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowNewAngrinessScale(newAngriness);
+
+        yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowGoHome();
+
+
     }
 }

@@ -42,6 +42,7 @@ public class GuardAI : MonoBehaviour
     [Header("AI Settings")]
     [SerializeField] private float searchRadius = 5f;
     [SerializeField] private float searchDuration = 10f;
+    [SerializeField] private float playerCatchRadius = 1f;
 
     [Header("Other")]
     [SerializeField] private float rotationSpeed = 5f;
@@ -141,11 +142,20 @@ public class GuardAI : MonoBehaviour
             lastKnownPlayerLocation = player.transform.position;
             StartCoroutine(ImprovePlayerTrack());
         }
+        if(Vector3.Distance(transform.position, player.transform.position) < playerCatchRadius)
+        {
+            Debug.Log("Player caught");
+            PlayerCaught();
+        }
     }
 
     private IEnumerator ImprovePlayerTrack()
     {
         yield return new WaitForSeconds(1.5f);
+        lastKnownPlayerLocation = player.transform.position;
+        yield return new WaitForSeconds(1.5f);
+        lastKnownPlayerLocation = player.transform.position;
+        yield return new WaitForSeconds(1);
         lastKnownPlayerLocation = player.transform.position;
     }
 
@@ -247,7 +257,10 @@ public class GuardAI : MonoBehaviour
 
 
 
+    private void PlayerCaught()
+    {
 
+    }
 
 
 
@@ -280,7 +293,7 @@ public class GuardAI : MonoBehaviour
                 float signedAngle = Vector3.Angle(transform.forward, target.transform.position - transform.position);
                 if (Mathf.Abs(signedAngle) < fovAngle / 2 && Physics.Raycast(transform.position + raycastOffset, target.transform.position - transform.position, out RaycastHit hit, fovDistance, ~ignoreMask))
                 {
-                    Debug.Log(hit.collider.name);
+                    //Debug.Log(hit.collider.name);
                     Debug.DrawLine(transform.position + raycastOffset, hit.point);
                     if (hit.collider.TryGetComponent(out PlayerMovement player))
                     {

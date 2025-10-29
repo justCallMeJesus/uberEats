@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class GameInput : MonoBehaviour
 {
@@ -53,6 +54,12 @@ public class GameInput : MonoBehaviour
     public void DisableVehicleControls()
     {
         playerInputActions.Player.Enable();
+        playerInputActions.Vehicle.Disable();
+    }
+
+    public void DisableControls()
+    {
+        playerInputActions.Player.Disable();
         playerInputActions.Vehicle.Disable();
     }
     

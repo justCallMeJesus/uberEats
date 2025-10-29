@@ -65,7 +65,7 @@ public class ItemSpawnManager : MonoBehaviour
                 itemCollectorUI.AddItemRequirement(newItem);
             }
         }
-        //GameManager.Instance.selectedItems = this.selectedItems;
+        GameManager.Instance.ItemsSelected();
     }
 
     private void SpawnSelectedItems()

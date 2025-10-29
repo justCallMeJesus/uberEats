@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Shovel
   multiplesName: Shovels
-  value: 35
+  priority: 1
   type: 2
   pickupTime: 1.4
