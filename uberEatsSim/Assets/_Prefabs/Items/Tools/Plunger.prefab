@@ -77,6 +77,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37e4a200b546ffa4faa529534b6203c5, type: 3}
+--- !u!23 &26589343201757023 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 37e4a200b546ffa4faa529534b6203c5, type: 3}
+  m_PrefabInstance: {fileID: 1702329306807049179}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1158931440671783984 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 37e4a200b546ffa4faa529534b6203c5, type: 3}
@@ -133,7 +138,11 @@ PrefabInstance:
     - target: {fileID: 5088047501485374170, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: Visual
       value: 
-      objectReference: {fileID: -7511558181221131132, guid: e0d911be2c4eda247931f1be885b40d7, type: 3}
+      objectReference: {fileID: 26589343201757023}
+    - target: {fileID: 5088047501485374170, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
+      propertyPath: itemSO
+      value: 
+      objectReference: {fileID: 11400000, guid: ec2ffbb8dbd17f44c9dec4e9de86c706, type: 2}
     - target: {fileID: 5999978805449858039, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.36

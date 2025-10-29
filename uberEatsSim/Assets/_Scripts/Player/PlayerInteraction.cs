@@ -88,7 +88,6 @@ public class PlayerInteraction : MonoBehaviour
     {
         if(currentlyHighlightedItem != null)
         {
-            Debug.Log("picking up");
             timeHeld += Time.deltaTime;
             if (timeHeld > currentlyHighlightedItem.itemSO.pickupTime)
             {

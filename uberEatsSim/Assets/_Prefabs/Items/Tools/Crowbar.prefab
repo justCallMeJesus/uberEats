@@ -51,7 +51,11 @@ PrefabInstance:
     - target: {fileID: 5088047501485374170, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: Visual
       value: 
-      objectReference: {fileID: -7511558181221131132, guid: e0d911be2c4eda247931f1be885b40d7, type: 3}
+      objectReference: {fileID: 6816017711978675590}
+    - target: {fileID: 5088047501485374170, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
+      propertyPath: itemSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 91d2b060780893b49b84bc5467fff1eb, type: 2}
     - target: {fileID: 5999978805449858039, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.36
@@ -150,5 +154,10 @@ PrefabInstance:
 --- !u!4 &5682547824816654057 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e0d911be2c4eda247931f1be885b40d7, type: 3}
+  m_PrefabInstance: {fileID: 5284638119577051394}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6816017711978675590 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: e0d911be2c4eda247931f1be885b40d7, type: 3}
   m_PrefabInstance: {fileID: 5284638119577051394}
   m_PrefabAsset: {fileID: 0}

@@ -9,7 +9,8 @@ public class ItemSO : ScriptableObject
     public enum ItemType
     {
         Fruit,
-        Alcohol
+        Alcohol,
+        Tool
     }
 
     public new string name;
