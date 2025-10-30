@@ -1,5 +1,3 @@
-com.unity.ai.navigation copyright © 2016 Unity Technologies ApS
-
-Licensed under the Unity Companion License for Unity-dependent projects (see https://unity3d.com/legal/licenses/unity_companion_license).
-
-Unless expressly provided otherwise, the Software under this license is made available strictly on an “AS IS” BASIS WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Please review the license for details on these and other terms and conditions.
+version https://git-lfs.github.com/spec/v1
+oid sha256:2b2113e0522b3eaa9e701d70956f9affaccac7e79d99b6029903bcec7139590e
+size 453

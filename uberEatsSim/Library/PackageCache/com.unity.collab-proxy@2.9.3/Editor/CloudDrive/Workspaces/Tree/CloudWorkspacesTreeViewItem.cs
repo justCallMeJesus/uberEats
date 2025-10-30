@@ -1,25 +1,3 @@
-using UnityEditor.IMGUI.Controls;
-
-using PlasticGui.WorkspaceWindow.Items;
-
-#if UNITY_6000_2_OR_NEWER
-using TreeViewItem = UnityEditor.IMGUI.Controls.TreeViewItem<int>;
-#endif
-
-namespace Unity.PlasticSCM.Editor.CloudDrive.Workspaces.Tree
-{
-    internal class CloudWorkspacesTreeViewItem : TreeViewItem
-    {
-        internal ExpandedTreeNode ExpandedTreeNode { get; private set; }
-        internal bool IsExpandable { get; private set; }
-
-        internal CloudWorkspacesTreeViewItem(
-            int id, ExpandedTreeNode expandedTreeNode, bool isExpandable, int depth)
-            : base(id, depth)
-        {
-            ExpandedTreeNode = expandedTreeNode;
-            IsExpandable = isExpandable;
-            displayName = expandedTreeNode.RelativePath;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2b7cf4e07828ab33a7719a4a558e6ba199eb9295974296c62e5322e2bed55b41
+size 775

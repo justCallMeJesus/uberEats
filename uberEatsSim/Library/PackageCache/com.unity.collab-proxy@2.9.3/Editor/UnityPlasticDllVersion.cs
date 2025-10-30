@@ -1,18 +1,3 @@
-﻿using System.Diagnostics;
-using System.IO;
-
-using Unity.PlasticSCM.Editor.AssetUtils;
-
-namespace Unity.PlasticSCM.Editor
-{
-    internal static class UnityPlasticDllVersion
-    {
-        internal static string GetFileVersion()
-        {
-            string unityPlasticDllFullPath = Path.Combine(
-                AssetsPath.GetLibEditorFolderFullPath(), "unityplastic.dll");
-
-            return FileVersionInfo.GetVersionInfo(unityPlasticDllFullPath).FileVersion;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e6ea1bd4168d4b2ec668abdef3db4f5c2d72ee99bc381e969528a436eb02d9be
+size 483

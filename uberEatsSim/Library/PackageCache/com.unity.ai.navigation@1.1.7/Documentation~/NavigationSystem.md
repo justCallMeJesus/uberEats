@@ -1,10 +1,3 @@
-# Navigation System in Unity
-
-This section describes the key concepts necessary to use AI Navigation in Unity. It contains the following topics:
-
-| **Topic**  | **Description**                |
-|:-----------|:-------------------------------|
-| [**Inner Workings of the Navigation System**](NavInnerWorkings.md)| Understand how the different elements of the AI Navigation system work together. |
-| [**About Agents**](AboutAgents.md)| Learn about NavMesh agents. |
-| [**About Obstacles**](AboutObstacles.md)| Learn about NavMesh obstacles. |
-| [**Navigation Areas and Costs**](AreasAndCosts.md)| Understand the purpose of navigation areas and why you would use one type of area over another. |
+version https://git-lfs.github.com/spec/v1
+oid sha256:ee8ca23a2bb140c659cb7bcea21f3cf9ec74ae88b552900349964798c38f1af3
+size 692

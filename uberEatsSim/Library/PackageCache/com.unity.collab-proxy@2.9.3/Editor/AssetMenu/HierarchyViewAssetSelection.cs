@@ -1,19 +1,3 @@
-﻿using UnityEditor.VersionControl;
-
-namespace Unity.PlasticSCM.Editor.AssetMenu
-{
-    internal class HierarchyViewAssetSelection : AssetUVCSOperations.IAssetSelection
-    {
-        AssetList AssetUVCSOperations.IAssetSelection.GetSelectedAssets()
-        {
-            return mSelectedAsset != null ? new AssetList() { mSelectedAsset } : new AssetList();
-        }
-
-        internal void SetActiveAsset(Asset asset)
-        {
-            mSelectedAsset = asset;
-        }
-
-        Asset mSelectedAsset;
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:e9b32d8962da3c10dd7ab2cd5dcd21c71c6337532fb429cc00a401c44854365c
+size 513

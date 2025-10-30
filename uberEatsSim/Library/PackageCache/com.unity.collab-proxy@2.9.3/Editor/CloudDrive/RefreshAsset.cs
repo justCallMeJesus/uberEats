@@ -1,19 +1,3 @@
-using UnityEditor;
-
-namespace Unity.PlasticSCM.Editor.CloudDrive
-{
-    internal static class RefreshAsset
-    {
-        internal static void BeforeLongAssetOperation()
-        {
-            AssetDatabase.DisallowAutoRefresh();
-        }
-
-        internal static void AfterLongAssetOperation()
-        {
-            AssetDatabase.AllowAutoRefresh();
-
-            AssetDatabase.Refresh(ImportAssetOptions.Default);
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4c28396c59b2fb4c0281f59d292c91938af6ebc28c3be25dd4a66d286c6eb98e
+size 431

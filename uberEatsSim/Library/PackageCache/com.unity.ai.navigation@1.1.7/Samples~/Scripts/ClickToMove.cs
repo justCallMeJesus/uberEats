@@ -1,30 +1,3 @@
-using UnityEngine;
-using UnityEngine.AI;
-
-namespace Unity.AI.Navigation.Samples
-{
-    /// <summary>
-    /// Use physics raycast hit from mouse click to set agent destination
-    /// </summary>
-    [RequireComponent(typeof(NavMeshAgent))]
-    public class ClickToMove : MonoBehaviour
-    {
-        NavMeshAgent m_Agent;
-        RaycastHit m_HitInfo = new RaycastHit();
-
-        void Start()
-        {
-            m_Agent = GetComponent<NavMeshAgent>();
-        }
-
-        void Update()
-        {
-            if (Input.GetMouseButtonDown(0) && !Input.GetKey(KeyCode.LeftShift))
-            {
-                var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray.origin, ray.direction, out m_HitInfo))
-                    m_Agent.destination = m_HitInfo.point;
-            }
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7a8b3d9aac37f7f40c700dfc696d0811b246e5c720410a1c54aba76bdea8f94d
+size 836

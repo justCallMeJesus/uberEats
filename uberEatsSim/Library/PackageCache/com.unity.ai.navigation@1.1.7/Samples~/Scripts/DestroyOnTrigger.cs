@@ -1,18 +1,3 @@
-using UnityEngine;
-
-namespace Unity.AI.Navigation.Samples
-{
-    /// <summary>
-    /// Destroy owning GameObject if any collider with a specific tag is trespassing
-    /// </summary>
-    public class DestroyOnTrigger : MonoBehaviour
-    {
-        public string m_Tag = "Player";
-
-        void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.tag == m_Tag)
-                Destroy(gameObject);
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:37a52a79c4d3a6e27985abc6fd2eac3ff03b4f1bc54e7f26b78a90b0a7af4fe6
+size 434

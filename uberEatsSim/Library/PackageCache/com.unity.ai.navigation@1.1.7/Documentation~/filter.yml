@@ -1,13 +1,3 @@
-apiRules:
-  - exclude:
-      uidRegex: ^Unity\.AI\.Navigation\.Editor\.Converter.*$
-      type: Namespace
-  - exclude:
-      uidRegex: ^Unity\.AI\.Navigation\.Samples.*$
-      type: Namespace
-  - exclude:
-      uidRegex: ^Unity\.AI\.Navigation\.Tests.*$
-      type: Namespace
-  - exclude:
-      uidRegex: ^Unity\.AI\.Navigation\.Editor\.Tests.*$
-      type: Namespace
+version https://git-lfs.github.com/spec/v1
+oid sha256:bc82185a3f75a9cbdadf58f1ccccebf26a7670e1565c49cc7d57160655e06cd7
+size 367

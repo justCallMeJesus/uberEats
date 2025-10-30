@@ -1,19 +1,3 @@
-{
-    "name": "Unity.TextMeshPro",
-    "references": [],
-    "optionalUnityReferences": [],
-    "includePlatforms": [],
-    "excludePlatforms": [],
-    "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [
-      {
-        "name": "Unity",
-        "expression": "2022.3.16f1",
-        "define": "UNITY_XR_VISIONOS_SUPPORTED"
-      }
-    ]
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7eedebbbac797df2601f5002431849ef56885c3fb1456c77852d69f4a6cd91f5
+size 458

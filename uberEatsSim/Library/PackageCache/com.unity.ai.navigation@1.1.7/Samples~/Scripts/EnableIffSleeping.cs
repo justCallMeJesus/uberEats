@@ -1,31 +1,3 @@
-using UnityEngine;
-
-namespace Unity.AI.Navigation.Samples
-{
-    /// <summary>
-    /// Enables a behaviour when a rigidbody settles movement
-    /// otherwise disables the behaviour
-    /// </summary>
-    public class EnableIffSleeping : MonoBehaviour
-    {
-        public Behaviour m_Behaviour;
-        Rigidbody m_Rigidbody;
-
-        void Start()
-        {
-            m_Rigidbody = GetComponent<Rigidbody>();
-        }
-
-        void Update()
-        {
-            if (m_Rigidbody == null || m_Behaviour == null)
-                return;
-
-            if (m_Rigidbody.IsSleeping() && !m_Behaviour.enabled)
-                m_Behaviour.enabled = true;
-
-            if (!m_Rigidbody.IsSleeping() && m_Behaviour.enabled)
-                m_Behaviour.enabled = false;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ef3b529cfd899240ec1b50f293121d006ca728f8c131aa43287335133ee1c9c2
+size 778

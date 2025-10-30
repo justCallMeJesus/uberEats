@@ -1,22 +1,3 @@
-#if UNITY_2022_2_OR_NEWER
-using Unity.AI.Navigation.Editor.Converter;
-using UnityEditor;
-using UnityEngine;
-
-namespace Unity.AI.Navigation.Updater
-{
-    internal static class NavMeshUpdaterEditor
-    {
-        [MenuItem("Window/AI/NavMesh Updater", false, 50)]
-        public static void ShowWindow()
-        {
-            SystemConvertersEditor wnd = EditorWindow.GetWindow<SystemConvertersEditor>();
-            wnd.titleContent = new GUIContent("NavMesh Updater");
-            wnd.DontSaveToLayout(wnd);
-            wnd.maxSize = new Vector2(650f, 4000f);
-            wnd.minSize = new Vector2(650f, 400f);
-            wnd.Show();
-        }
-    }
-}
-#endif
+version https://git-lfs.github.com/spec/v1
+oid sha256:fd72e56db4769e35b051fe3a7caced9b9b1736008f8f22a4f623789de8929f91
+size 659
