@@ -159,8 +159,7 @@ public class GameManager : MonoBehaviour
         int previousGrandmaAngriness = 80;
         int timePenalty = CalculateTimePenalty();
         int missedItemPenalty = CalculateMissedItemsPenalty();
-        int caughtPenalty = 20;
-        int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty - caughtPenalty;
+        int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty;
         if(newGrandmaAngriness < 0)
         {
             newGrandmaAngriness = 0;
@@ -172,13 +171,13 @@ public class GameManager : MonoBehaviour
         // fade in player caught screen
         UIManager.Instance.ShowCaughtScreen();
 
-        StartCoroutine(BlendInInfoScreen(previousGrandmaAngriness, timePenalty, missedItemPenalty, caughtPenalty, newGrandmaAngriness));
+        StartCoroutine(BlendInInfoScreen(previousGrandmaAngriness, timePenalty, missedItemPenalty, newGrandmaAngriness));
         // update angryness scale
         // blend in next button
         // load next scene
     }
 
-    private IEnumerator BlendInInfoScreen(int prevAngriness, int timePenalty, int missedItemPenalty, int caughtPenalty, int newAngriness)
+    private IEnumerator BlendInInfoScreen(int prevAngriness, int timePenalty, int missedItemPenalty, int newAngriness)
     {
         yield return new WaitForSeconds(1f);
         UIManager.Instance.ShowPreviousAngrinessScale(prevAngriness);
@@ -188,9 +187,6 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
         UIManager.Instance.ShowMissedItemPenalty(missedItemPenalty);
-
-        yield return new WaitForSeconds(1f);
-        UIManager.Instance.ShowCaughtPenalty(caughtPenalty);
 
         yield return new WaitForSeconds(1f);
         UIManager.Instance.ShowNewAngrinessScale(newAngriness);

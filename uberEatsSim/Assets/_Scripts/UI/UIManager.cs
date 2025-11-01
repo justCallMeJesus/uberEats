@@ -21,7 +21,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider prevAngrinessScaleBar;
     [SerializeField] private TextMeshProUGUI timePenaltyInfo;
     [SerializeField] private TextMeshProUGUI missedItemPenaltyInfo;
-    [SerializeField] private TextMeshProUGUI caughtPenaltyInfo;
     [SerializeField] private GameObject newAngrinessScale;
     [SerializeField] private Slider newAngrinessScaleBar;
     [SerializeField] private GameObject goHomeButton;
@@ -97,11 +96,6 @@ public class UIManager : MonoBehaviour
         missedItemPenaltyInfo.gameObject.SetActive(true);
     }
 
-    public void ShowCaughtPenalty(int caughtPenalty)
-    {
-        caughtPenaltyInfo.text = caughtPenalty.ToString();
-        caughtPenaltyInfo.gameObject.SetActive(true);
-    }
 
     public void ShowNewAngrinessScale(int angriness)
     {

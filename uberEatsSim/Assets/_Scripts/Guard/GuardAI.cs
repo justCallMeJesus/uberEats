@@ -43,9 +43,13 @@ public class GuardAI : MonoBehaviour
     [SerializeField] private float searchRadius = 5f;
     [SerializeField] private float searchDuration = 10f;
     [SerializeField] private float playerCatchRadius = 1f;
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float chasingSpeed = 6f;
 
     [Header("Other")]
     [SerializeField] private float rotationSpeed = 5f;
+
+    
 
     // ============ private Attributes =============
 
@@ -56,9 +60,14 @@ public class GuardAI : MonoBehaviour
     private Vector3 startPosition;
     private Quaternion startRotation;
 
+    // =============== public Fields =================
+
+    public float detectionMultiplier = 1;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        agent.speed = moveSpeed;
         playerDetector = GetComponent<GuardPlayerDetector>();
         alertState = AlertState.Patrolling;
         startPosition = transform.position;
@@ -120,6 +129,7 @@ public class GuardAI : MonoBehaviour
             alertLevel += Time.deltaTime * detectionSpeed * (distanceDrawbackMultiplier / Vector3.Distance(transform.position, player.transform.position));
             if (alertLevel >= 100)
             {
+                agent.speed = chasingSpeed;
                 ChangeAlertState(AlertState.Alerted);
             }
         }
@@ -163,8 +173,9 @@ public class GuardAI : MonoBehaviour
     {
         if (PlayerInFOV())
         {
+            agent.speed = chasingSpeed;
             ChangeAlertState(AlertState.Alerted);
-            alertLevel = alertLevel = 100;
+            alertLevel = 100;
         }
 
         agent.SetDestination(lastKnownPlayerLocation);
@@ -179,6 +190,7 @@ public class GuardAI : MonoBehaviour
     {
         if (PlayerInFOV())
         {
+            agent.speed = chasingSpeed;
             ChangeAlertState(AlertState.Alerted);
             alertLevel = alertLevel = 100;
             StopCoroutine(WanderingSearchCoroutine());
@@ -216,6 +228,7 @@ public class GuardAI : MonoBehaviour
         if(alertState == AlertState.Wandering)
         {
             ChangeAlertState(AlertState.Returning);
+            agent.speed = moveSpeed;
             Debug.Log("returning to patrol");
         }
     }
@@ -231,6 +244,7 @@ public class GuardAI : MonoBehaviour
             alertLevel += Time.deltaTime * detectionSpeed * (distanceDrawbackMultiplier / Vector3.Distance(transform.position, player.transform.position));
             if (alertLevel >= 100)
             {
+                agent.speed = chasingSpeed;
                 ChangeAlertState(AlertState.Alerted);
             }
         }
