@@ -18,7 +18,7 @@ public enum AlertState
 
 public class GuardAI : MonoBehaviour
 {
-    public GameObject player;
+    public Player player;
     public AlertState alertState;
     [Range(0, 100)] public float alertLevel;
 
@@ -43,11 +43,14 @@ public class GuardAI : MonoBehaviour
     [SerializeField] private float searchRadius = 5f;
     [SerializeField] private float searchDuration = 10f;
     [SerializeField] private float playerCatchRadius = 1f;
-    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float chasingSpeed = 6f;
 
     [Header("Other")]
     [SerializeField] private float rotationSpeed = 5f;
+    //[SerializeField] public GuardPathSO guardPath;
+    [SerializeField] public GuardWalkPoint[] guardWalkPoints;
+    [SerializeField] public Vector3 spawnPoint;
 
     
 
@@ -59,6 +62,9 @@ public class GuardAI : MonoBehaviour
     private float searchTimer;
     private Vector3 startPosition;
     private Quaternion startRotation;
+    private int currentPatrolDestination = 0;
+
+    //public List<Vector3> guardPathLocations = new List<Vector3>();
 
     // =============== public Fields =================
 
@@ -72,11 +78,14 @@ public class GuardAI : MonoBehaviour
         alertState = AlertState.Patrolling;
         startPosition = transform.position;
         startRotation = Quaternion.LookRotation(transform.forward);
+
+
     }
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(AILogicLoop());
+        player = FindObjectOfType<Player>();
     }
 
     private IEnumerator AILogicLoop()
@@ -112,6 +121,27 @@ public class GuardAI : MonoBehaviour
 
     private void PatrollingState()
     {
+        Debug.Log(transform.rotation.eulerAngles.y);
+        if (guardWalkPoints != null)
+        {
+            if (guardWalkPoints.Length > 1)
+            {
+                if (agent.remainingDistance < 0.5)
+                {
+                    SetNextPatrolDestination();
+                    agent.SetDestination(guardWalkPoints[currentPatrolDestination].location);
+                }
+            }
+            else if (guardWalkPoints.Length == 1)
+            {
+                if (transform.rotation.eulerAngles.y != guardWalkPoints[0].rotation)
+                {
+                    
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(guardWalkPoints[0].rotation, Vector3.up), Time.deltaTime * rotationSpeed);
+                }
+            }
+            
+        }
         if (PlayerInFOV())
         {
             ChangeAlertState(AlertState.Suspicious);
@@ -234,7 +264,15 @@ public class GuardAI : MonoBehaviour
     }
     private void ReturningState() 
     { 
-        agent.SetDestination(startPosition);
+        if(guardWalkPoints != null)
+        {
+            agent.SetDestination(guardWalkPoints[currentPatrolDestination].location);
+        }
+        else
+        {
+            agent.SetDestination(startPosition);
+        }
+        
         if (!PlayerInFOV())
         {
             alertLevel -= Time.deltaTime * alertDecay;
@@ -251,16 +289,42 @@ public class GuardAI : MonoBehaviour
 
         if(agent.remainingDistance < 0.5)
         {
-            if(transform.rotation != startRotation)
-            {
-                transform.rotation = Quaternion.Slerp(transform.rotation, startRotation, Time.deltaTime * rotationSpeed);
-            }
-            else
-            {
-                ChangeAlertState(AlertState.Patrolling);
-            }
+            //if(transform.rotation != startRotation)
+            //{
+            //    transform.rotation = Quaternion.Slerp(transform.rotation, startRotation, Time.deltaTime * rotationSpeed);
+            //}
+            //else
+            //{
+                
+            //}
+            SetNextPatrolDestination();
+            ChangeAlertState(AlertState.Patrolling);
         }
 
+    }
+
+    private void SetNextPatrolDestination()
+    {
+        if(guardWalkPoints != null)
+        {
+            if(guardWalkPoints.Length > 1)
+            {
+                currentPatrolDestination++;
+                if (currentPatrolDestination >= guardWalkPoints.Length)
+                {
+                    currentPatrolDestination = 0;
+                }
+            }
+            else if(guardWalkPoints.Length == 1)
+            {
+                if (transform.rotation.y != guardWalkPoints[0].rotation)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, startRotation, Time.deltaTime * rotationSpeed);
+                }
+            }
+            
+
+        }
     }
 
 
@@ -273,7 +337,13 @@ public class GuardAI : MonoBehaviour
 
     private void PlayerCaught()
     {
+        if (!GameManager.Instance.RoundOver)
+        {
+            GameManager.Instance.PlayerCaught();
+            GameManager.Instance.RoundOver = true;
 
+        }
+        
     }
 
 

@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static ItemSO;
 
 public class GameManager : MonoBehaviour
 {
 
-    private List<SelectedItems> originalSelectedItems = new List<SelectedItems>();
+    private List<SelectedItems> unpaidSelectedItems = new List<SelectedItems>();
     public List<SelectedItems> selectedItems = new List<SelectedItems>();
 
+    public bool RoundOver = false;
   
 
     public static GameManager Instance;
@@ -25,6 +27,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float standardStartTime = 30f;
     [SerializeField] private float addonTimePerItem = 5f;
     [SerializeField] private float timePenaltyNormalizer = 3f;
+
+    [Header("Other Managers")]
+    [SerializeField] private GuardManager guardManager;
+    [SerializeField] private GameSaves gameSave;
 
 
     [Serializable]
@@ -41,6 +47,11 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        unpaidSelectedItems = selectedItems;
     }
 
     public void ReduceItemCount(Item itemToReduce)
@@ -85,7 +96,7 @@ public class GameManager : MonoBehaviour
 
     public void ItemsSelected()
     {
-        originalSelectedItems = selectedItems;
+        unpaidSelectedItems = selectedItems;
         givenTime = standardStartTime + addonTimePerItem * selectedItems.Count;
     }
 
@@ -132,10 +143,10 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private int CalculateMissedItemsPenalty()
+    private int CalculateMissedItemsPenalty(List<SelectedItems> itemList)
     {
         int penalty = 0;
-        foreach (SelectedItems item in selectedItems)
+        foreach (SelectedItems item in itemList)
         {
             penalty += item.item.itemSO.priority * item.count;
         }
@@ -149,6 +160,15 @@ public class GameManager : MonoBehaviour
             Debug.Log(CalculateTimePenalty());
             PlayerCaught();
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            guardManager.ChooseExtraGuards(1);
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Scene currentScene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(currentScene.buildIndex);
+        }
 
         timeElapsed = Time.time;
         
@@ -156,28 +176,31 @@ public class GameManager : MonoBehaviour
 
     public void PlayerCaught()
     {
-        int previousGrandmaAngriness = 80;
+        int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
         int timePenalty = CalculateTimePenalty();
-        int missedItemPenalty = CalculateMissedItemsPenalty();
-        int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty;
+        int missedItemPenalty = CalculateMissedItemsPenalty(unpaidSelectedItems);
+        int caughtPenalty = 5;
+        int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty - caughtPenalty;
         if(newGrandmaAngriness < 0)
         {
             newGrandmaAngriness = 0;
 
             // game over
         }
+
+        gameSave.grandmaAngrinessScale = newGrandmaAngriness;
         // disable player controls
         GameInput.instance.DisableControls();
         // fade in player caught screen
         UIManager.Instance.ShowCaughtScreen();
 
-        StartCoroutine(BlendInInfoScreen(previousGrandmaAngriness, timePenalty, missedItemPenalty, newGrandmaAngriness));
+        StartCoroutine(BlendInInfoScreen(previousGrandmaAngriness, timePenalty, missedItemPenalty, caughtPenalty, newGrandmaAngriness));
         // update angryness scale
         // blend in next button
         // load next scene
     }
 
-    private IEnumerator BlendInInfoScreen(int prevAngriness, int timePenalty, int missedItemPenalty, int newAngriness)
+    private IEnumerator BlendInInfoScreen(int prevAngriness, int timePenalty, int missedItemPenalty, int caughtPenalty, int newAngriness)
     {
         yield return new WaitForSeconds(1f);
         UIManager.Instance.ShowPreviousAngrinessScale(prevAngriness);
@@ -189,11 +212,20 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.ShowMissedItemPenalty(missedItemPenalty);
 
         yield return new WaitForSeconds(1f);
+        UIManager.Instance.ShowCaughtPenalty(caughtPenalty);
+
+        yield return new WaitForSeconds(1f);
         UIManager.Instance.ShowNewAngrinessScale(newAngriness);
 
         yield return new WaitForSeconds(1f);
         UIManager.Instance.ShowGoHome();
 
 
+    }
+
+    public void ResetGame()
+    {
+        gameSave.grandmaAngrinessScale = 100;
+        gameSave.extraSpawnedGuards.Clear();
     }
 }
