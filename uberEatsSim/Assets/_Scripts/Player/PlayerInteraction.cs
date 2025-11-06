@@ -19,8 +19,17 @@ public class PlayerInteraction : MonoBehaviour
 
     private float pickupTime = 3f;
     private float timeHeld = 0f;
+    private float exitTimeHeld = 0f;    
+    private float exitTime = 2f;
 
     private Player player;
+
+    public HashSet <Checkout> checkoutsInRange = new HashSet<Checkout>();
+    public HashSet<ExitArea> exitAreasInRange = new HashSet<ExitArea>();
+    private Checkout interactableCheckout = null;
+
+    private bool currentlyCheckingOut = false;
+    private ItemSO randomItemToCheckout = null;
 
     private void Start()
     {
@@ -30,7 +39,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Instance_OnItemTypeCollected(GameManager.SelectedItems completedItem)
     {
-        List<Item> itemsToRemove = interactableItems.Where(item => item.itemSO == completedItem.item.itemSO).ToList();
+        List<Item> itemsToRemove = interactableItems.Where(item => item.itemSO == completedItem.itemSO).ToList();
         foreach (Item itemToRemove in itemsToRemove)
         {
             interactableItems.Remove(itemToRemove);
@@ -45,17 +54,39 @@ public class PlayerInteraction : MonoBehaviour
         {
             TryInteract();
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("space press started");
+            if (GameManager.Instance.collectedItems.Count > 0)
+            {
+                randomItemToCheckout = GameManager.Instance.collectedItems[Random.Range(0, GameManager.Instance.collectedItems.Count)].itemSO;
+            }
 
+        }
         if (Input.GetKey(KeyCode.Space))
         {
             TryPickUp();
+            if(exitAreasInRange.Count > 0)
+            {
+                TryExit();
+            }
         }
         else if (Input.GetKeyUp(KeyCode.Space))
         {
             Debug.Log("Space released");
             timeHeld = 0f;
+            exitTimeHeld = 0f;
+            //if (currentlyCheckingOut)
+            //{
+            //    currentlyCheckingOut = false;
+                
+
+            //}
         }
+
+       
         HighlightClosestItemInRange();
+        FindClosestCheckout();
 
         if (player.playerMovement.IsMoving())
         {
@@ -84,14 +115,41 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    private void TryExit()
+    {
+        exitTimeHeld += Time.deltaTime;
+        if(exitTimeHeld > exitTime)
+        {
+            Debug.Log("ExitedSupermarket");
+            exitTimeHeld = 0f;
+            GameManager.Instance.PlayerLeft();
+        }
+    }
+
     private void TryPickUp()
     {
+        if(interactableCheckout != null)
+        {
+            currentlyCheckingOut = true;
+            timeHeld += Time.deltaTime;
+            //Debug.Log("checking out " + randomItemToCheckout);
+            if (randomItemToCheckout != null && timeHeld > randomItemToCheckout.pickupTime)
+            {
+                GameManager.Instance.AddItemToPaid(randomItemToCheckout);
+                randomItemToCheckout = null;
+                if (GameManager.Instance.collectedItems.Count > 0)
+                {
+                    randomItemToCheckout = GameManager.Instance.collectedItems[Random.Range(0, GameManager.Instance.collectedItems.Count)].itemSO;
+                }
+                timeHeld = 0f;
+            }
+        }
         if(currentlyHighlightedItem != null)
         {
             timeHeld += Time.deltaTime;
             if (timeHeld > currentlyHighlightedItem.itemSO.pickupTime)
             {
-                GameManager.Instance.ReduceItemCount(currentlyHighlightedItem);
+                GameManager.Instance.ReduceItemCount(currentlyHighlightedItem.itemSO);
                 interactableItems.Remove(currentlyHighlightedItem);
                 Destroy(currentlyHighlightedItem.gameObject);
                 timeHeld = 0f;
@@ -117,6 +175,37 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     // A method to find and return the closest GameObject
+    public void FindClosestCheckout()
+    {
+        // Check if there a are checkouts in range
+        if(checkoutsInRange.Count == 0)
+        {
+            interactableCheckout = null;
+            return;
+        }
+
+        Checkout closestCheckout = null;
+        float minDistance = Mathf.Infinity;
+
+        Vector3 playerPosition = transform.position;
+
+        foreach(Checkout checkout in checkoutsInRange)
+        {
+            if(checkout == null)
+            {
+                continue;
+            }
+            float currentDistanceSquared = (checkout.transform.position - playerPosition).sqrMagnitude;
+            if (currentDistanceSquared < minDistance)
+            {
+                // 3. Update the minimum distance and store a reference to the closest object
+                minDistance = currentDistanceSquared;
+                closestCheckout = checkout;
+            }
+        }
+
+        interactableCheckout = closestCheckout;
+    }
     public Item FindClosestItem()
     {
         // Check if the list is empty or if the player reference is missing

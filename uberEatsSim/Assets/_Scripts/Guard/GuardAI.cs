@@ -121,7 +121,6 @@ public class GuardAI : MonoBehaviour
 
     private void PatrollingState()
     {
-        Debug.Log(transform.rotation.eulerAngles.y);
         if (guardWalkPoints != null)
         {
             if (guardWalkPoints.Length > 1)

@@ -96,7 +96,7 @@ public class Item : MonoBehaviour
     public bool CheckItemList()
     {
         // check if selectedItems has an item with same itemSO as this items ItemSO
-        bool matchFound = GameManager.Instance.selectedItems.Any(selectedItem => selectedItem.item.itemSO == this.itemSO);
+        bool matchFound = GameManager.Instance.selectedItems.Any(selectedItem => selectedItem.itemSO == this.itemSO);
         return matchFound;
     }
 }

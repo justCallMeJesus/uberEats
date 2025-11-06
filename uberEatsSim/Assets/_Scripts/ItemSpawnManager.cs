@@ -5,6 +5,23 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEditor.Progress;
 
+
+public static class IListExtensions
+{
+    // This class to shuffle a list was copied from a Unity forum
+    public static void Shuffle<T>(this IList<T> ts)
+    {
+        var count = ts.Count;
+        var last = count - 1;
+        for (var i = 0; i < last; ++i)
+        {
+            var r = UnityEngine.Random.Range(i, count);
+            var tmp = ts[i];
+            ts[i] = ts[r];
+            ts[r] = tmp;
+        }
+    }
+}
 public class ItemSpawnManager : MonoBehaviour
 {
     public Shelf[] shelves;
@@ -54,7 +71,7 @@ public class ItemSpawnManager : MonoBehaviour
                 selectedItems.Add(selectedItem);
                 
                 int amount = Random.Range(itemSet.minimumPerItem, itemSet.maximumPerItem + 1);
-                GameManager.Instance.selectedItems.Add(new GameManager.SelectedItems { item = selectedItem, count = amount });
+                GameManager.Instance.selectedItems.Add(new GameManager.SelectedItems { itemSO = selectedItem.itemSO, count = amount });
 
                 ItemCollectorUI.ItemData newItem = new ItemCollectorUI.ItemData
                 {
@@ -80,11 +97,13 @@ public class ItemSpawnManager : MonoBehaviour
     private void FillEmptyShelves()
     {
         List<Shelf> emptyShelves = FindObjectsOfType<Shelf>().Where(shelf => shelf.shelfFull == false).ToList();
+        emptyShelves.Shuffle();
         foreach(Shelf shelf in emptyShelves)
         {
             shelf.FillEmptyShelf();
         }
     }
-
     
+
+
 }

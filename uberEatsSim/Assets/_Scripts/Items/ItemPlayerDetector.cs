@@ -32,7 +32,7 @@ public class ItemPlayerDetector : MonoBehaviour
 
     public bool CheckItemList()
     {
-        bool matchFound = GameManager.Instance.selectedItems.Any(selectedItem => selectedItem.item.itemSO == parentItem.itemSO);
+        bool matchFound = GameManager.Instance.selectedItems.Any(selectedItem => selectedItem.itemSO == parentItem.itemSO);
         return matchFound;
     }
 }

@@ -30,7 +30,7 @@ public class ItemRowDisplay : MonoBehaviour
     private void Instance_OnItemTypeCollected(GameManager.SelectedItems itemType)
     {
         Debug.Log("Item completion event called");
-        if(displayedItem.itemSO == itemType.item.itemSO)
+        if(displayedItem.itemSO == itemType.itemSO)
         {
             Debug.Log("Item completion crossed out called");
             CrossOutItem();

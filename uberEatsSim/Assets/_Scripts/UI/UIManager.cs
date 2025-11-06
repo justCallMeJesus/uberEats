@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject caughtScreen;
 
     [Header("End Screen Info Fields")]
+    [SerializeField] private TextMeshProUGUI exitTextInfo;
     [SerializeField] private GameObject prevAngrinessScale;
     [SerializeField] private Slider prevAngrinessScaleBar;
     [SerializeField] private TextMeshProUGUI timePenaltyInfo;
@@ -115,6 +116,11 @@ public class UIManager : MonoBehaviour
         goHomeButton.SetActive(true);
     }
 
+
+    public void SetExitText(string exitText)
+    {
+        exitTextInfo.text = exitText;
+    }
     public void UpdateTime(float time)
     {
 

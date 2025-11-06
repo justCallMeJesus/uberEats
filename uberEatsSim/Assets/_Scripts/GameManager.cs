@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,8 +11,10 @@ using static ItemSO;
 public class GameManager : MonoBehaviour
 {
 
-    private List<SelectedItems> unpaidSelectedItems = new List<SelectedItems>();
+    private List<SelectedItems> originalSelectedItems = new List<SelectedItems>();
     public List<SelectedItems> selectedItems = new List<SelectedItems>();
+    public List<SelectedItems> collectedItems = new List<SelectedItems>();
+    public List<SelectedItems> paidItems = new List<SelectedItems>();
 
     public bool RoundOver = false;
   
@@ -37,7 +40,7 @@ public class GameManager : MonoBehaviour
     public struct SelectedItems
     {
         // The type of item (replace 'MyItemType' with your actual item class or type)
-        public Item item;
+        public ItemSO itemSO;
 
         // The integer value associated with this specific item
         public int count;
@@ -51,13 +54,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        unpaidSelectedItems = selectedItems;
+        originalSelectedItems = selectedItems;
     }
 
-    public void ReduceItemCount(Item itemToReduce)
+    public void ReduceItemCount(ItemSO itemToReduce)
     {
         // 1. Find the index of the ItemData entry that holds the matching item
-        int index = selectedItems.FindIndex(data => data.item.itemSO == itemToReduce.itemSO);
+        int index = selectedItems.FindIndex(data => data.itemSO == itemToReduce);
 
         // 2. Check if the item was found
         if (index != -1)
@@ -72,6 +75,8 @@ public class GameManager : MonoBehaviour
                 // 5. Modify the 'count' property of the *copy*
                 dataToModify.count--;
 
+                AddItemToInventory(itemToReduce);
+
                 // 6. Replace the old struct in the list with the modified copy
                 selectedItems[index] = dataToModify;
 
@@ -80,7 +85,7 @@ public class GameManager : MonoBehaviour
                 // 7. Check for removal if count hits zero
                 if (dataToModify.count <= 0)
                 {
-                    RemoveItemFromList(index);
+                    RemoveItemFromList(selectedItems, index);
                 }
             }
             else
@@ -94,23 +99,100 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ReduceItemFromCollectedItems(ItemSO itemToReduce)
+    {
+        int index = collectedItems.FindIndex(data => data.itemSO == itemToReduce);
+
+        // 2. Check if the item was found
+        if (index != -1)
+        {
+            Debug.Log("index found");
+            // 3. Retrieve the struct from the list (this creates a *copy*)
+            SelectedItems dataToModify = collectedItems[index];
+
+            // 4. Check if we have any left before reducing
+            if (dataToModify.count > 0)
+            {
+                // 5. Modify the 'count' property of the *copy*
+                dataToModify.count--;
+
+                AddItemToInventory(itemToReduce);
+
+                // 6. Replace the old struct in the list with the modified copy
+                collectedItems[index] = dataToModify;
+
+                Debug.Log($"Used one {itemToReduce.name}. Remaining: {dataToModify.count}");
+
+                // 7. Check for removal if count hits zero
+                if (dataToModify.count <= 0)
+                {
+                    collectedItems.RemoveAt(index);
+                }
+            }
+            else
+            {
+                Debug.Log($"Cannot reduce {itemToReduce.name}. Count is already zero.");
+            }
+        }
+        else
+        {
+            Debug.Log($"Item {itemToReduce.name} not found in inventory.");
+        }
+    }
+
+    private void AddItemToInventory(ItemSO itemToAdd)
+    {
+        //ReduceItemFromCollectedItems(itemToAdd);
+        int index = collectedItems.FindIndex(data => data.itemSO == itemToAdd);
+        
+        if (index != -1)
+        {
+            SelectedItems dataToModify = collectedItems[index];
+            dataToModify.count++;
+
+            collectedItems[index] = dataToModify;
+        }
+        else
+        {
+            collectedItems.Add(new SelectedItems { itemSO = itemToAdd, count = 1 });
+        }
+    }
+
+    public void AddItemToPaid(ItemSO itemToAdd)
+    {
+        ReduceItemFromCollectedItems(itemToAdd);
+        int index = paidItems.FindIndex(data => data.itemSO == itemToAdd);
+
+        if (index != -1)
+        {
+            SelectedItems dataToModify = paidItems[index];
+            dataToModify.count++;
+
+            paidItems[index] = dataToModify;
+        }
+        else
+        {
+            paidItems.Add(new SelectedItems { itemSO = itemToAdd, count = 1 });
+        }
+    }
+
     public void ItemsSelected()
     {
-        unpaidSelectedItems = selectedItems;
+        originalSelectedItems = selectedItems;
         givenTime = standardStartTime + addonTimePerItem * selectedItems.Count;
     }
 
-    private void RemoveItemFromList(int index)
+    private void RemoveItemFromList(List<SelectedItems> list, int index)
     {
         // Use RemoveAt since we already have the index
-        OnItemTypeCollected?.Invoke(selectedItems[index]);
-        selectedItems.RemoveAt(index);
+        OnItemTypeCollected?.Invoke(list[index]);
+        list.RemoveAt(index);
         Debug.Log("Item count reached zero and was removed from the list.");
     }
 
     public bool ItemInList(Item item)
     {
-        int index = selectedItems.FindIndex(data => data.item.itemSO == item.itemSO);
+        int index = selectedItems.FindIndex(data => data.itemSO == item.itemSO);
         if(index == -1)
         {
             return false;
@@ -123,7 +205,7 @@ public class GameManager : MonoBehaviour
         int missedPririty = 0;
         foreach(SelectedItems item in selectedItems)
         {
-            missedPririty += item.item.itemSO.priority * item.count;
+            missedPririty += item.itemSO.priority * item.count;
         }
 
         return missedPririty;
@@ -148,7 +230,7 @@ public class GameManager : MonoBehaviour
         int penalty = 0;
         foreach (SelectedItems item in itemList)
         {
-            penalty += item.item.itemSO.priority * item.count;
+            penalty += item.itemSO.priority * item.count;
         }
         return penalty;
     }
@@ -178,7 +260,7 @@ public class GameManager : MonoBehaviour
     {
         int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
         int timePenalty = CalculateTimePenalty();
-        int missedItemPenalty = CalculateMissedItemsPenalty(unpaidSelectedItems);
+        int missedItemPenalty = CalculateMissedItemsPenalty(originalSelectedItems);
         int caughtPenalty = 5;
         int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty - caughtPenalty;
         if(newGrandmaAngriness < 0)
@@ -189,6 +271,7 @@ public class GameManager : MonoBehaviour
         }
 
         gameSave.grandmaAngrinessScale = newGrandmaAngriness;
+        UIManager.Instance.SetExitText("You got caught!");
         // disable player controls
         GameInput.instance.DisableControls();
         // fade in player caught screen
@@ -198,6 +281,29 @@ public class GameManager : MonoBehaviour
         // update angryness scale
         // blend in next button
         // load next scene
+    }
+
+    public void PlayerLeft()
+    {
+        int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
+        int timePenalty = CalculateTimePenalty();
+        int missedItemPenalty = CalculateMissedItemsPenalty(originalSelectedItems);
+        int caughtPenalty = 0;
+        int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty - caughtPenalty;
+        if (newGrandmaAngriness < 0)
+        {
+            newGrandmaAngriness = 0;
+
+            // game over
+        }
+        gameSave.grandmaAngrinessScale = newGrandmaAngriness;
+        UIManager.Instance.SetExitText("You left the Store!");
+        // disable player controls
+        GameInput.instance.DisableControls();
+        // fade in player caught screen
+        UIManager.Instance.ShowCaughtScreen();
+
+        StartCoroutine(BlendInInfoScreen(previousGrandmaAngriness, timePenalty, missedItemPenalty, caughtPenalty, newGrandmaAngriness));
     }
 
     private IEnumerator BlendInInfoScreen(int prevAngriness, int timePenalty, int missedItemPenalty, int caughtPenalty, int newAngriness)
