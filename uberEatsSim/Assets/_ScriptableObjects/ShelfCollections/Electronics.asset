@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c81dfdf6d63634b498f0343b265964e5, type: 3}
+  m_Name: Electronics
+  m_EditorClassIdentifier: 
+  items:
+  - {fileID: 6006497755025760787, guid: 59c62c39442036947a987e4d12512c12, type: 3}
+  - {fileID: 6006497755025760787, guid: ed6a7bbbbc0973247b1f29e184c7b339, type: 3}
+  - {fileID: 6006497755025760787, guid: abe89d60400b60c45bb830a660ae0067, type: 3}
+  - {fileID: 6006497755025760787, guid: aa3b371bb4c230c45b188700282f7ff8, type: 3}
+  - {fileID: 6006497755025760787, guid: a680f22c23f9a46428ecbd3a4b564ac6, type: 3}
+  - {fileID: 6006497755025760787, guid: 9ab950444b061484ea79b4ad6e38674f, type: 3}
+  - {fileID: 6006497755025760787, guid: 36498e1c96487ca499038478bea81ae0, type: 3}
+  - {fileID: 6006497755025760787, guid: c5d52b44ac0508444907b83ee33c78cc, type: 3}
+  - {fileID: 6006497755025760787, guid: 999563fc3953a644cb61b7f96a209ade, type: 3}

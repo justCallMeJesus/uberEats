@@ -10,7 +10,10 @@ public class ItemSO : ScriptableObject
     {
         Fruit,
         Alcohol,
-        Tool
+        Tool,
+        Tupperware,
+        Medical,
+        Electronics
     }
 
     public new string name;
