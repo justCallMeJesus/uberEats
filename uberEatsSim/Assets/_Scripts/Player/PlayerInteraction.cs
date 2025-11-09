@@ -166,8 +166,8 @@ public class PlayerInteraction : MonoBehaviour
             timeHeld += Time.deltaTime;
             if(randomItemToCheckout != null)
             {
-                UIManager.Instance.checkoutBar.SetCheckoutBar(Mathf.RoundToInt((timeHeld / randomItemToCheckout.pickupTime) * 100));
-                if (timeHeld > randomItemToCheckout.pickupTime)
+                UIManager.Instance.checkoutBar.SetCheckoutBar(Mathf.RoundToInt((timeHeld / randomItemToCheckout.pickupTime / 3) * 100));
+                if (timeHeld > randomItemToCheckout.pickupTime / 3)
                 {
                     UIManager.Instance.checkoutBar.SetCheckoutBar(0);
                     player.playerMovement.SetNormalMoveSpeed();
@@ -196,6 +196,7 @@ public class PlayerInteraction : MonoBehaviour
                 GameManager.Instance.ReduceItemCount(currentlyHighlightedItem.itemSO);
                 interactableItems.Remove(currentlyHighlightedItem);
                 Destroy(currentlyHighlightedItem.gameObject);
+                player.playerMovement.ReduceMaxSpeedBy(currentlyHighlightedItem.itemSO.pickupTime / 10);
                 timeHeld = 0f;
             }
             

@@ -90,7 +90,7 @@ public class Item : MonoBehaviour
     public void EnableClosestHighlight()
     {
         Material[] newMaterials = new Material[2];
-        newMaterials[0] = Visual.material;
+        newMaterials[0] = Visual.sharedMaterial;
         newMaterials[1] = closestHighlightMat;
         Visual.materials = newMaterials;
     }

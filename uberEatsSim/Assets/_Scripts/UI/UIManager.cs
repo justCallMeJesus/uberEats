@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI unpaidItemsText;
     [SerializeField] public TextMeshProUGUI timeGiven;
     [SerializeField] public TextMeshProUGUI timePassed;
+    [SerializeField] public Slider leavingBar;
 
 
     public static UIManager Instance { get; private set; }
@@ -144,5 +145,16 @@ public class UIManager : MonoBehaviour
     public void SetUnpaidItemsAmount(int amount)
     {
         unpaidItemsText.text = amount.ToString();
+    }
+
+    public void SetLeavingBar(float amount)
+    {
+        leavingBar.gameObject.SetActive(true);
+        leavingBar.value = amount;
+    }
+
+    public void TurnOffLeavingBar()
+    {
+        leavingBar.gameObject.SetActive(false);
     }
 }

@@ -249,6 +249,7 @@ MonoBehaviour:
   alertState: 0
   alertLevel: 0
   detectionSpeed: 5
+  vehicleDetectionSpeed: 8
   distanceDrawbackMultiplier: 75.8
   alertDecay: 5
   alertedSearchingDecay: 2

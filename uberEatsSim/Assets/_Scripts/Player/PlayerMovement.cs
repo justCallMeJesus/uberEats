@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     [SerializeField] public float moveSpeed = 7f;
+    private float minMoveSpeed = 3.5f;
     private float interactionMoveSpeed = 0.5f;
     private float rotateSpeed = 25f;
 
@@ -17,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController cc;
 
-    private float originalSpeed;
+    public float originalSpeed {  get; private set; }
 
     
 
@@ -81,6 +82,15 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = originalSpeed;
     }
 
+    public void ReduceMaxSpeedBy(float speed)
+    {
+        if(originalSpeed > minMoveSpeed)
+        {
+            moveSpeed -= speed;
+            originalSpeed -= speed;
+        }
+        
+    }
 
 
     

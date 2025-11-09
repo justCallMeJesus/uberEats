@@ -25,11 +25,12 @@ public class GameManager : MonoBehaviour
 
     public float timeElapsed;
     private float givenTime;
+    private float timeSinceStart;
 
     [Header("Time Settings")]
     [SerializeField] private float standardStartTime = 30f;
     [SerializeField] private float addonTimePerItem = 5f;
-    [SerializeField] private float timePenaltyNormalizer = 3f;
+    [SerializeField] private float timePenaltyNormalizer = 1.5f;
 
     [Header("Other Managers")]
     [SerializeField] private GuardManager guardManager;
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        timeSinceStart = Time.time;
     }
 
     private void Start()
@@ -225,13 +227,22 @@ public class GameManager : MonoBehaviour
         return penalty;
         
     }
+    private int CalculateCaughtMissedItemsPenalty()
+    {
+        int penalty = 0;
+        foreach (SelectedItems item in selectedItems)
+        {
+            penalty += item.count;
+        }
+        return penalty;
+    }
 
     private int CalculateMissedItemsPenalty(List<SelectedItems> itemList)
     {
         int penalty = 0;
         foreach (SelectedItems item in itemList)
         {
-            penalty += item.itemSO.priority * item.count;
+            penalty += item.count;
         }
         return penalty;
     }
@@ -253,18 +264,24 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(currentScene.buildIndex);
         }
 
-        timeElapsed = Time.time;
+        timeElapsed = Time.time - timeSinceStart;
         UIManager.Instance.SetTimePassed(Mathf.Round(timeElapsed * 10f) / 10f);
         
     }
 
     public void PlayerCaught()
     {
+        if (RoundOver)
+        {
+            return;
+        }
+        RoundOver = true;
+        gameSave.currentRound++;
         GuardManager.Instance.ChooseExtraGuards(1);
 
         int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
         int timePenalty = CalculateTimePenalty();
-        int missedItemPenalty = CalculateMissedItemsPenalty(originalSelectedItems);
+        int missedItemPenalty = CalculateCaughtMissedItemsPenalty();
         int caughtPenalty = 5;
         int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty - caughtPenalty;
         if(newGrandmaAngriness < 0)
@@ -289,6 +306,12 @@ public class GameManager : MonoBehaviour
 
     public void PlayerLeft()
     {
+        if (RoundOver)
+        {
+            return;
+        }
+        RoundOver = true;
+        gameSave.currentRound++;
         if(collectedItems.Count > 0)
         {
             GuardManager.Instance.ChooseExtraGuards(2);
@@ -301,7 +324,7 @@ public class GameManager : MonoBehaviour
 
         int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
         int timePenalty = CalculateTimePenalty();
-        int missedItemPenalty = CalculateMissedItemsPenalty(originalSelectedItems);
+        int missedItemPenalty = CalculateMissedItemsPenalty(selectedItems);
         int caughtPenalty = 0;
         int newGrandmaAngriness = previousGrandmaAngriness - timePenalty - missedItemPenalty - caughtPenalty;
         if (newGrandmaAngriness < 0)

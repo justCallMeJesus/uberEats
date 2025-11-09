@@ -37,11 +37,16 @@ public class GuardManager : MonoBehaviour
 
     public void ChooseExtraGuards(int amount)
     {
+
         for (int i = 0; i < amount; i++)
         {
-            GuardAI newGuard = restGuards[Random.Range(0, restGuards.Count)];
-            restGuards.Remove(newGuard);
-            guardSavesSO.extraSpawnedGuards.Add(newGuard);
+            if(restGuards.Count > 0)
+            {
+                GuardAI newGuard = restGuards[Random.Range(0, restGuards.Count)];
+                restGuards.Remove(newGuard);
+                guardSavesSO.extraSpawnedGuards.Add(newGuard);
+            }
+            
         }
     }
 }

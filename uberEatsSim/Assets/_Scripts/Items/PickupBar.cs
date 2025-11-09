@@ -11,6 +11,7 @@ public class PickupBar : MonoBehaviour
     private void Awake()
     {
         slider = GetComponent<Slider>();
+        this.gameObject.SetActive(false);
     }
 
     public void SetPickupBar(int amount)

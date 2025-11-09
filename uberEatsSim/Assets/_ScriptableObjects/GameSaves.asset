@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GameSaves
   m_EditorClassIdentifier: 
   grandmaAngrinessScale: 100
+  currentRound: 0

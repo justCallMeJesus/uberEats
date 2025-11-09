@@ -33,13 +33,15 @@ public class ItemSpawnManager : MonoBehaviour
     public List<Item> selectedItems = new List<Item>();
 
     [SerializeField] private ItemCollectorUI itemCollectorUI;
+    [SerializeField] private GameSaves gamesave;
 
     private void Start()
     {
+        int currentRound = Mathf.Clamp(gamesave.currentRound,0,collection.Length-1);
         shelves = FindObjectsOfType<Shelf>();
         foreach (Shelf shelf in shelves)
         {
-            foreach(var itemSet in collection[0].itemSets)
+            foreach(var itemSet in collection[currentRound].itemSets)
             {
                 if(shelf.shelfSO == itemSet.shelfSO)
                 {
@@ -55,8 +57,8 @@ public class ItemSpawnManager : MonoBehaviour
 
     private void SelectItemsFromCollection()
     {
-
-        foreach (var itemSet in collection[0].itemSets)
+        int currentRound = Mathf.Clamp(gamesave.currentRound, 0, collection.Length - 1);
+        foreach (var itemSet in collection[currentRound].itemSets)
         {
             // foreach category in the collection of category
             for (int i = 0; i < itemSet.amount; i++)

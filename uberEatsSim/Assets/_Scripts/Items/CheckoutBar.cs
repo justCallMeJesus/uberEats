@@ -10,6 +10,7 @@ public class CheckoutBar : MonoBehaviour
     private void Awake()
     {
         slider = GetComponent<Slider>();
+        this.gameObject.SetActive(false);
     }
 
     public void SetCheckoutBar(int amount)

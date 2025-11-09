@@ -31,7 +31,7 @@ public class GuardAI : MonoBehaviour
 
     [Header("Detection Settings")]
     [SerializeField] private float detectionSpeed = 5;
-    [SerializeField] private float vehicleDetectionSpeed = 100;
+    [SerializeField] private float vehicleDetectionSpeed = 5;
     [SerializeField] private float distanceDrawbackMultiplier = 5;
     [SerializeField] private float alertDecay = 5;
     [SerializeField] private float alertedSearchingDecay = 2;
