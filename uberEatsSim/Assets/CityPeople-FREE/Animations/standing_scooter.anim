@@ -14,7 +14,6 @@ AnimationClip:
   m_RotationCurves: []
   m_CompressedRotationCurves: []
   m_EulerCurves: []
-<<<<<<< Updated upstream
   m_PositionCurves:
   - curve:
       serializedVersion: 2
@@ -41,9 +40,6 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     path: 
-=======
-  m_PositionCurves: []
->>>>>>> Stashed changes
   m_ScaleCurves: []
   m_FloatCurves:
   - serializedVersion: 2
@@ -490,11 +486,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-<<<<<<< Updated upstream
         value: 0.11
-=======
-        value: 0
->>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -503,11 +495,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.85
-<<<<<<< Updated upstream
         value: 0.11
-=======
-        value: 0
->>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -601,7 +589,6 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
-<<<<<<< Updated upstream
       attribute: 71
       script: {fileID: 0}
       typeID: 95
@@ -611,8 +598,6 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
-=======
->>>>>>> Stashed changes
       attribute: 82
       script: {fileID: 0}
       typeID: 95
@@ -1221,11 +1206,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-<<<<<<< Updated upstream
         value: 0.11
-=======
-        value: 0
->>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1234,11 +1215,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1.85
-<<<<<<< Updated upstream
         value: 0.11
-=======
-        value: 0
->>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1313,7 +1290,6 @@ AnimationClip:
     classID: 95
     script: {fileID: 0}
     flags: 16
-<<<<<<< Updated upstream
   - serializedVersion: 2
     curve:
       serializedVersion: 2
@@ -1404,9 +1380,7 @@ AnimationClip:
     classID: 4
     script: {fileID: 0}
     flags: 0
-=======
->>>>>>> Stashed changes
   m_EulerEditorCurves: []
-  m_HasGenericRootTransform: 0
+  m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
   m_Events: []
