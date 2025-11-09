@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Shovels
   priority: 1
   type: 2
-  pickupTime: 1.4
+  pickupTime: 1

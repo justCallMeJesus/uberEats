@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Cups
   priority: 1
   type: 3
-  pickupTime: 1
+  pickupTime: 0.6

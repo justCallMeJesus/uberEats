@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Pots
   priority: 1
   type: 3
-  pickupTime: 2.5
+  pickupTime: 1.7

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Alzheimer Pill Bottle
   multiplesName: Alzheimer Pill Bottles
-  priority: 3
+  priority: 1
   type: 4
-  pickupTime: 0.5
+  pickupTime: 0.3

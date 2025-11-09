@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: TV
   multiplesName: TV
-  priority: 2
+  priority: 1
   type: 5
-  pickupTime: 0.5
+  pickupTime: 2

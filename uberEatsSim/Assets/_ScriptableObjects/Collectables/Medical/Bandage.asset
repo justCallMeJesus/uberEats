@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Bandages
   priority: 1
   type: 4
-  pickupTime: 0.8
+  pickupTime: 0.5

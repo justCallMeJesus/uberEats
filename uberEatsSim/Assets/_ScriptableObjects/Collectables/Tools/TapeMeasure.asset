@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Tape Measures
   priority: 1
   type: 2
-  pickupTime: 0.4
+  pickupTime: 0.3

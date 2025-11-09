@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Mousepads
   priority: 1
   type: 5
-  pickupTime: 0.5
+  pickupTime: 0.4

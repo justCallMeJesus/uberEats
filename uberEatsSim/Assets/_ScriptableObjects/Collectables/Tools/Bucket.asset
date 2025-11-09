@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Buckets
   priority: 1
   type: 2
-  pickupTime: 1.1
+  pickupTime: 0.8

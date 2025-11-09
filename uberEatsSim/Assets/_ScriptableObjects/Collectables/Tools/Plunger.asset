@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Plungers
   priority: 1
   type: 2
-  pickupTime: 0.7
+  pickupTime: 0.6

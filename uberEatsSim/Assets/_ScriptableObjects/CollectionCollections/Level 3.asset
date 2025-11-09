@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSets:
   - shelfSO: {fileID: 11400000, guid: ab5d21b30bdf6b941badb6b2c888361a, type: 2}
-    amount: 5
+    amount: 2
     minimumPerItem: 3
-    maximumPerItem: 8
+    maximumPerItem: 5
   - shelfSO: {fileID: 11400000, guid: 4179aa3186f28584993f5dd4a00ef6d5, type: 2}
-    amount: 3
+    amount: 1
     minimumPerItem: 1
     maximumPerItem: 2
   - shelfSO: {fileID: 11400000, guid: 888ffe15b1afca848941877e4fe3d292, type: 2}

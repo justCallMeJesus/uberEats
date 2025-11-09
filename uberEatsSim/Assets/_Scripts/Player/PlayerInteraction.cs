@@ -166,8 +166,9 @@ public class PlayerInteraction : MonoBehaviour
             timeHeld += Time.deltaTime;
             if(randomItemToCheckout != null)
             {
-                UIManager.Instance.checkoutBar.SetCheckoutBar(Mathf.RoundToInt((timeHeld / randomItemToCheckout.pickupTime / 3) * 100));
-                if (timeHeld > randomItemToCheckout.pickupTime / 3)
+                float checkoutTime = randomItemToCheckout.pickupTime / 3;
+                UIManager.Instance.checkoutBar.SetCheckoutBar(Mathf.RoundToInt((timeHeld / checkoutTime) * 100));
+                if (timeHeld > checkoutTime)
                 {
                     UIManager.Instance.checkoutBar.SetCheckoutBar(0);
                     player.playerMovement.SetNormalMoveSpeed();

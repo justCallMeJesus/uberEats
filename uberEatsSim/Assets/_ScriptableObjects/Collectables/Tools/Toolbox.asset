@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Toolboxes
   priority: 1
   type: 2
-  pickupTime: 2
+  pickupTime: 1.5

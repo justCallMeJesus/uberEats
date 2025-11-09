@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Time Settings")]
     [SerializeField] private float standardStartTime = 30f;
-    [SerializeField] private float addonTimePerItem = 5f;
+    [SerializeField] private float addonTimePerItem = 7f;
     [SerializeField] private float timePenaltyNormalizer = 1.5f;
 
     [Header("Other Managers")]
@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
         }
         RoundOver = true;
         gameSave.currentRound++;
-        GuardManager.Instance.ChooseExtraGuards(1);
+        GuardManager.Instance.ChooseExtraGuards(2);
 
         int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
         int timePenalty = CalculateTimePenalty();
@@ -314,11 +314,11 @@ public class GameManager : MonoBehaviour
         gameSave.currentRound++;
         if(collectedItems.Count > 0)
         {
-            GuardManager.Instance.ChooseExtraGuards(2);
+            GuardManager.Instance.ChooseExtraGuards(4);
         }
         else
         {
-            GuardManager.Instance.ChooseExtraGuards(1);
+            GuardManager.Instance.ChooseExtraGuards(2);
         }
         
 

@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Medkits
   priority: 1
   type: 4
-  pickupTime: 2
+  pickupTime: 1

@@ -16,4 +16,4 @@ MonoBehaviour:
   multiplesName: Desk Lamps
   priority: 1
   type: 5
-  pickupTime: 1
+  pickupTime: 0.7
