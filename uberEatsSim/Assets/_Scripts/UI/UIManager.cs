@@ -27,9 +27,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider newAngrinessScaleBar;
     [SerializeField] private GameObject goHomeButton;
 
-    [Header("Timers")]
-    [SerializeField] private TextMeshProUGUI timePassed;
 
+
+    [Header("Tooltips")]
+    [SerializeField] public PickupBar pickupBar;
+    [SerializeField] public CheckoutBar checkoutBar;
+    [SerializeField] public TextMeshProUGUI unpaidItemsText;
+    [SerializeField] public TextMeshProUGUI timeGiven;
+    [SerializeField] public TextMeshProUGUI timePassed;
 
 
     public static UIManager Instance { get; private set; }
@@ -124,5 +129,20 @@ public class UIManager : MonoBehaviour
     public void UpdateTime(float time)
     {
 
+    }
+
+    public void SetTimeGiven(int time)
+    {
+        timeGiven.text = time.ToString();
+    }
+
+    public void SetTimePassed(float time)
+    {
+        timePassed.text = time.ToString();
+    }
+
+    public void SetUnpaidItemsAmount(int amount)
+    {
+        unpaidItemsText.text = amount.ToString();
     }
 }

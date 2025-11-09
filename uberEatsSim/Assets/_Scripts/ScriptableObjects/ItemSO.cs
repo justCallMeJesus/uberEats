@@ -13,7 +13,8 @@ public class ItemSO : ScriptableObject
         Tool,
         Tupperware,
         Medical,
-        Electronics
+        Electronics,
+        Utensils
     }
 
     public new string name;

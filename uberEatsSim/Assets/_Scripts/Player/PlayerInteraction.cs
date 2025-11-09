@@ -12,7 +12,7 @@ public class PlayerInteraction : MonoBehaviour
     private float detectionDistance = 5;
 
 
-    public List<Item> interactableItems = new List<Item>();
+    public HashSet<Item> interactableItems = new HashSet<Item>();
 
     public Item currentlyHighlightedItem = null;
     private Item closestItem = null;
@@ -30,11 +30,23 @@ public class PlayerInteraction : MonoBehaviour
 
     private bool currentlyCheckingOut = false;
     private ItemSO randomItemToCheckout = null;
+    private bool pickingUp = false;
+
+    public int testSelectAmount = 0;
+
+    [SerializeField] private LayerMask interactionBlockLayers;
+    [SerializeField] private LayerMask scooterLayer;
 
     private void Start()
     {
         player = GetComponent<Player>();
         GameManager.Instance.OnItemTypeCollected += Instance_OnItemTypeCollected;
+        GameInput.instance.playerInputActions.Player.Interact.performed += Interact_performed;
+    }
+
+    private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        TryInteract();
     }
 
     private void Instance_OnItemTypeCollected(GameManager.SelectedItems completedItem)
@@ -43,18 +55,18 @@ public class PlayerInteraction : MonoBehaviour
         foreach (Item itemToRemove in itemsToRemove)
         {
             interactableItems.Remove(itemToRemove);
-            itemToRemove.DisableHighlight();
+            itemToRemove.DisableNormalHighlight();
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    TryInteract();
+        //}
         if (Input.GetKeyDown(KeyCode.E))
-        {
-            TryInteract();
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("space press started");
             if (GameManager.Instance.collectedItems.Count > 0)
@@ -63,7 +75,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.E))
         {
             TryPickUp();
             if(exitAreasInRange.Count > 0)
@@ -71,47 +83,66 @@ public class PlayerInteraction : MonoBehaviour
                 TryExit();
             }
         }
-        else if (Input.GetKeyUp(KeyCode.Space))
+        else if (Input.GetKeyUp(KeyCode.E))
         {
             Debug.Log("Space released");
             timeHeld = 0f;
             exitTimeHeld = 0f;
+            UIManager.Instance.pickupBar.SetPickupBar(0);
+            player.playerMovement.SetNormalMoveSpeed();
+            pickingUp = false;
             //if (currentlyCheckingOut)
             //{
             //    currentlyCheckingOut = false;
-                
+
 
             //}
         }
+        if(!pickingUp)
+        {
+            HighlightClosestItemInRange();
+        }
 
-       
-        HighlightClosestItemInRange();
+
+        testSelectAmount = interactableItems.Count;
+        
         FindClosestCheckout();
 
-        if (player.playerMovement.IsMoving())
-        {
-            timeHeld = 0f;  
-        }
-        
+        //if (player.playerMovement.IsMoving())
+        //{
+        //    timeHeld = 0f;
+        //}
+
     }
 
     private void TryInteract()
     {
-        if (!Physics.Raycast(transform.position + new Vector3(0, interactionHeight, 0), transform.forward, out RaycastHit hit, interactionDistance))
-        {
-            return;
-        }
-        Debug.Log("collider hit");
+        //if (!Physics.Raycast(transform.position + new Vector3(0, interactionHeight, 0), transform.forward, out RaycastHit hit, interactionDistance, scooterLayer))
+        //{
+        //    return;
+        //}
+        //else
+        //{
+            
+        //}
+        
+        //Debug.Log(hit.collider.name);
 
-        if (hit.collider.TryGetComponent(out IInteractable interactable))
-        {
-            Debug.Log("interactable hit");
-            if (interactable.GetGameObject().TryGetComponent(out Vehicle vehicle))
-            {
-                Debug.Log("interacted with vehicle");
-                VehicleInteraction(vehicle);
-            }
+        //if (hit.collider.TryGetComponent(out IInteractable interactable))
+        //{
+        //    Debug.Log("interactable hit");
+        //    if (interactable.GetGameObject().TryGetComponent(out Vehicle vehicle))
+        //    {
+        //        Debug.Log("interacted with vehicle");
+        //        VehicleInteraction(vehicle);
+        //    }
 
+        //}
+        
+        if(player.vehicleDetector.vehicles.Count > 0)
+        {
+            Debug.Log(player.vehicleDetector.vehicles.First().gameObject.name);
+            VehicleInteraction(player.vehicleDetector.vehicles.First());
         }
     }
 
@@ -130,25 +161,38 @@ public class PlayerInteraction : MonoBehaviour
     {
         if(interactableCheckout != null)
         {
+            player.playerMovement.SetInteractionMoveSpeed();
             currentlyCheckingOut = true;
             timeHeld += Time.deltaTime;
-            //Debug.Log("checking out " + randomItemToCheckout);
-            if (randomItemToCheckout != null && timeHeld > randomItemToCheckout.pickupTime)
+            if(randomItemToCheckout != null)
             {
-                GameManager.Instance.AddItemToPaid(randomItemToCheckout);
-                randomItemToCheckout = null;
-                if (GameManager.Instance.collectedItems.Count > 0)
+                UIManager.Instance.checkoutBar.SetCheckoutBar(Mathf.RoundToInt((timeHeld / randomItemToCheckout.pickupTime) * 100));
+                if (timeHeld > randomItemToCheckout.pickupTime)
                 {
-                    randomItemToCheckout = GameManager.Instance.collectedItems[Random.Range(0, GameManager.Instance.collectedItems.Count)].itemSO;
+                    UIManager.Instance.checkoutBar.SetCheckoutBar(0);
+                    player.playerMovement.SetNormalMoveSpeed();
+                    GameManager.Instance.AddItemToPaid(randomItemToCheckout);
+                    randomItemToCheckout = null;
+                    if (GameManager.Instance.collectedItems.Count > 0)
+                    {
+                        randomItemToCheckout = GameManager.Instance.collectedItems[Random.Range(0, GameManager.Instance.collectedItems.Count)].itemSO;
+                    }
+                    timeHeld = 0f;
                 }
-                timeHeld = 0f;
             }
+            
         }
         if(currentlyHighlightedItem != null)
         {
+            pickingUp = true;
+            player.playerMovement.SetInteractionMoveSpeed();
             timeHeld += Time.deltaTime;
+            UIManager.Instance.pickupBar.SetPickupBar(Mathf.RoundToInt((timeHeld / currentlyHighlightedItem.itemSO.pickupTime) * 100));
             if (timeHeld > currentlyHighlightedItem.itemSO.pickupTime)
             {
+                pickingUp = false;
+                UIManager.Instance.pickupBar.SetPickupBar(0);
+                player.playerMovement.SetNormalMoveSpeed();
                 GameManager.Instance.ReduceItemCount(currentlyHighlightedItem.itemSO);
                 interactableItems.Remove(currentlyHighlightedItem);
                 Destroy(currentlyHighlightedItem.gameObject);
@@ -181,9 +225,16 @@ public class PlayerInteraction : MonoBehaviour
         if(checkoutsInRange.Count == 0)
         {
             interactableCheckout = null;
+            UIManager.Instance.checkoutBar.gameObject.SetActive(false);
             return;
         }
-
+        int unpaidItems = 0;
+        foreach(var item in GameManager.Instance.collectedItems)
+        {
+            unpaidItems += item.count;
+        }
+        UIManager.Instance.SetUnpaidItemsAmount(unpaidItems);
+        UIManager.Instance.checkoutBar.gameObject.SetActive(true);
         Checkout closestCheckout = null;
         float minDistance = Mathf.Infinity;
 
@@ -223,6 +274,10 @@ public class PlayerInteraction : MonoBehaviour
         // Iterate through all potential targets
         foreach (Item target in interactableItems)
         {
+            if(Physics.Raycast(transform.position, target.transform.position - transform.position, out RaycastHit hit, (target.transform.position - transform.position).magnitude, interactionBlockLayers))
+            {
+                continue;
+            }
             // Ensure the target is valid (not null)
             if (target == null)
             {
@@ -256,18 +311,20 @@ public class PlayerInteraction : MonoBehaviour
             if (currentlyHighlightedItem != closestItem)
             {
                 // if currentlyHighlightedItem is not null, enable normal highlight
-                if (currentlyHighlightedItem != null) { currentlyHighlightedItem.EnableHighlight(); }
+                if (currentlyHighlightedItem != null) { currentlyHighlightedItem.EnableNormalHighlight(); }
 
                 // set currentlyHighlightedItem as new closest item and enable its red highlight
                 currentlyHighlightedItem = closestItem;
                 closestItem.EnableClosestHighlight();
             }
+            UIManager.Instance.pickupBar.gameObject.SetActive(true);
         }
         else if (currentlyHighlightedItem != null)
         {
             // if not closestItem found but currentlyHighlightedItem is not null, enable its normal highlight and set red highlight to null
-            currentlyHighlightedItem.EnableHighlight();
+            currentlyHighlightedItem.EnableNormalHighlight();
             currentlyHighlightedItem = null;
+            UIManager.Instance.pickupBar.gameObject.SetActive(false);
         }
     }
 

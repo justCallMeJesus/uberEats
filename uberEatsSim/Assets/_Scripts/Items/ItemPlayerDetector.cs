@@ -16,6 +16,17 @@ public class ItemPlayerDetector : MonoBehaviour
                 player.interactableItems.Add(parentItem);
             }
         }
+        else if (other.TryGetComponent(out Vehicle vehicle))
+        {
+            if (vehicle.interacter != null)
+            {
+                if (CheckItemList())
+                {
+                    vehicle.interacter.playerInteraction.interactableItems.Add(parentItem);
+                }
+                
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -27,6 +38,17 @@ public class ItemPlayerDetector : MonoBehaviour
                 player.interactableItems.Remove(parentItem);
             }
             
+        }
+        else if (other.TryGetComponent(out Vehicle vehicle))
+        {
+            if (vehicle.interacter != null)
+            {
+                if (CheckItemList())
+                {
+                    vehicle.interacter.playerInteraction.interactableItems.Remove(parentItem);
+                }
+                
+            }
         }
     }
 

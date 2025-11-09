@@ -9,9 +9,12 @@ public class Player : MonoBehaviour
     [HideInInspector]
     public PlayerMovement playerMovement;
 
+    
+    public VehicleDetector vehicleDetector;
+
     [SerializeField] private CapsuleCollider capsuleCollider;
     [SerializeField] private CharacterController characterController;
-    void Start()
+    private void Awake()
     {
         playerInteraction = GetComponent<PlayerInteraction>();
         playerMovement = GetComponent<PlayerMovement>();

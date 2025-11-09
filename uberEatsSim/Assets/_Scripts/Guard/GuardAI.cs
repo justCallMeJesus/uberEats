@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using Color = UnityEngine.Color;
 
 
 public enum AlertState
@@ -29,9 +31,15 @@ public class GuardAI : MonoBehaviour
 
     [Header("Detection Settings")]
     [SerializeField] private float detectionSpeed = 5;
+    [SerializeField] private float vehicleDetectionSpeed = 100;
     [SerializeField] private float distanceDrawbackMultiplier = 5;
     [SerializeField] private float alertDecay = 5;
     [SerializeField] private float alertedSearchingDecay = 2;
+    [SerializeField] FieldOfView fieldOfView;
+    public Color startColor = Color.green;
+    public Color endColor = Color.red;
+    public Color alertedColor = Color.red;
+    [SerializeField] private Renderer fieldRenderer;
 
     [Header("Field of view settings")]
     [SerializeField] private float fovDistance = 2.3f;
@@ -63,6 +71,11 @@ public class GuardAI : MonoBehaviour
     private Vector3 startPosition;
     private Quaternion startRotation;
     private int currentPatrolDestination = 0;
+    private bool allowWandering = false;
+    private MaterialPropertyBlock propertyBlock;
+    private float originalDetectionSpeed;
+
+    public bool playerSpottedOnce = true;
 
     //public List<Vector3> guardPathLocations = new List<Vector3>();
 
@@ -72,13 +85,14 @@ public class GuardAI : MonoBehaviour
 
     private void Awake()
     {
+        originalDetectionSpeed = detectionSpeed;
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
         playerDetector = GetComponent<GuardPlayerDetector>();
         alertState = AlertState.Patrolling;
         startPosition = transform.position;
         startRotation = Quaternion.LookRotation(transform.forward);
-
+        propertyBlock = new MaterialPropertyBlock();
 
     }
     // Start is called before the first frame update
@@ -86,6 +100,14 @@ public class GuardAI : MonoBehaviour
     {
         StartCoroutine(AILogicLoop());
         player = FindObjectOfType<Player>();
+    }
+
+    private void Update()
+    {
+        fieldOfView.SetOrigin(transform.position);
+        fieldOfView.SetDirection(transform.forward);
+
+        
     }
 
     private IEnumerator AILogicLoop()
@@ -149,6 +171,9 @@ public class GuardAI : MonoBehaviour
         {
             alertLevel -= Time.deltaTime * alertDecay;
         }
+
+        Color color = Color.Lerp(startColor, endColor, alertLevel / 100f);
+        SetObjectColor(color);
     }
 
     private void SuspiciousState()
@@ -160,6 +185,7 @@ public class GuardAI : MonoBehaviour
             {
                 agent.speed = chasingSpeed;
                 ChangeAlertState(AlertState.Alerted);
+                playerSpottedOnce = true;
             }
         }
         else
@@ -170,6 +196,10 @@ public class GuardAI : MonoBehaviour
                 ChangeAlertState(AlertState.Patrolling);
             }
         }
+
+        Color color = Color.Lerp(startColor, endColor, alertLevel / 100f);
+        SetObjectColor(color);
+
     }
 
     private void AlertedState()
@@ -186,6 +216,7 @@ public class GuardAI : MonoBehaviour
             Debug.Log("Player caught");
             PlayerCaught();
         }
+        SetObjectColor(alertedColor);
     }
 
     private IEnumerator ImprovePlayerTrack()
@@ -196,6 +227,7 @@ public class GuardAI : MonoBehaviour
         lastKnownPlayerLocation = player.transform.position;
         yield return new WaitForSeconds(1);
         lastKnownPlayerLocation = player.transform.position;
+        allowWandering = true;
     }
 
     private void SearchingState() 
@@ -204,15 +236,19 @@ public class GuardAI : MonoBehaviour
         {
             agent.speed = chasingSpeed;
             ChangeAlertState(AlertState.Alerted);
+            StopCoroutine(ImprovePlayerTrack());
             alertLevel = 100;
         }
 
         agent.SetDestination(lastKnownPlayerLocation);
-        if(agent.remainingDistance < 0.5f)
+        if(agent.remainingDistance < 0.5f && allowWandering)
         {
+            allowWandering = false;
             ChangeAlertState(AlertState.Wandering);
             StartCoroutine(WanderingSearchCoroutine());
         }
+        Color color = Color.Lerp(startColor, endColor, alertLevel / 100f);
+        SetObjectColor(color);
     }
 
     private void WanderingState()
@@ -231,6 +267,8 @@ public class GuardAI : MonoBehaviour
             Vector3 newTarget = GetRandomPointInRadius(lastKnownPlayerLocation, searchRadius);
             agent.SetDestination(newTarget);
         }
+        Color color = Color.Lerp(startColor, endColor, alertLevel / 100f);
+        SetObjectColor(color);
 
     }
     private Vector3 GetRandomPointInRadius(Vector3 center, float radius)
@@ -260,6 +298,8 @@ public class GuardAI : MonoBehaviour
             agent.speed = moveSpeed;
             Debug.Log("returning to patrol");
         }
+        Color color = Color.Lerp(startColor, endColor, alertLevel / 100f);
+        SetObjectColor(color);
     }
     private void ReturningState() 
     { 
@@ -286,7 +326,10 @@ public class GuardAI : MonoBehaviour
             }
         }
 
-        if(agent.remainingDistance < 0.5)
+        Color color = Color.Lerp(startColor, endColor, alertLevel / 100f);
+        SetObjectColor(color);
+
+        if (agent.remainingDistance < 0.5)
         {
             //if(transform.rotation != startRotation)
             //{
@@ -362,27 +405,44 @@ public class GuardAI : MonoBehaviour
 
     private bool PlayerInFOV()
     {
+        // get list of objects in collider
         Collider[] targetsInFOV = Physics.OverlapSphere(transform.position, fovDistance);
         
+        // go through each possible target
         foreach (Collider target in targetsInFOV)
         {
+            // if player
             if (target.CompareTag("Player"))
             {
+                // get distance to player
                 float distance = Vector3.Distance(transform.position, target.transform.position);
+                // if player close enough to guard, return true
                 if(distance < blindSightDistance)
                 {
                     return true;
                 }
+                // get angle between guards forward and guardToToPlayer
                 float signedAngle = Vector3.Angle(transform.forward, target.transform.position - transform.position);
+                // if angle below fov angle and raycast doesnt hit any object
                 if (Mathf.Abs(signedAngle) < fovAngle / 2 && Physics.Raycast(transform.position + raycastOffset, target.transform.position - transform.position, out RaycastHit hit, fovDistance, ~ignoreMask))
                 {
-                    //Debug.Log(hit.collider.name);
                     Debug.DrawLine(transform.position + raycastOffset, hit.point);
+                    // if hit.collider has playerMovement script, return true
                     if (hit.collider.TryGetComponent(out PlayerMovement player))
                     {
+                        detectionSpeed = originalDetectionSpeed;
                         return true;
                     }
+                    else if(hit.collider.TryGetComponent(out Vehicle vehicle))
+                    {
+                        if(vehicle.interacter != null)
+                        {
+                            detectionSpeed = vehicleDetectionSpeed;
+                            return true;
+                        }
+                    }
                 }
+                // if player seen, but no line of sight, break and return false
                 break;
             }
         }
@@ -392,7 +452,18 @@ public class GuardAI : MonoBehaviour
 
 
 
+    private void SetObjectColor(Color colorToSet)
+    {
+        // Get the current property block settings
+        fieldRenderer.GetPropertyBlock(propertyBlock);
 
+        // Set the new color property (e.g., "_Color" for the main color)
+        // This is often better than using renderer.material.color = colorToSet;
+        propertyBlock.SetColor("_BaseColor", colorToSet);
+
+        // Apply the property block back to the renderer
+        fieldRenderer.SetPropertyBlock(propertyBlock);
+    }
 
 
 

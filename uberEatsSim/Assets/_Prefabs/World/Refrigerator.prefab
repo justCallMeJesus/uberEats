@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5337476079378194559}
+  - component: {fileID: 1831955984347061015}
   m_Layer: 12
   m_Name: Refrigerator
   m_TagString: Untagged
@@ -32,6 +33,27 @@ Transform:
   - {fileID: 4490495573727240524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1831955984347061015
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5124591242734051526}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.050255, y: 2.568039, z: 0.96183777}
+  m_Center: {x: 19.12513, y: 41.42208, z: 54.7184}
 --- !u!1 &6613962015519071728
 GameObject:
   m_ObjectHideFlags: 0

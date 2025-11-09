@@ -51,7 +51,7 @@ PrefabInstance:
     - target: {fileID: 5088047501485374170, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: Visual
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3866939236632964383}
     - target: {fileID: 5088047501485374170, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: itemSO
       value: 
@@ -154,5 +154,10 @@ PrefabInstance:
 --- !u!4 &2729476471786100336 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8105182573f26b5419c6a1345dcb1adc, type: 3}
+  m_PrefabInstance: {fileID: 2480275163424600475}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3866939236632964383 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 8105182573f26b5419c6a1345dcb1adc, type: 3}
   m_PrefabInstance: {fileID: 2480275163424600475}
   m_PrefabAsset: {fileID: 0}

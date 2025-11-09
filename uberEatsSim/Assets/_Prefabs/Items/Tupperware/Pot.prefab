@@ -55,7 +55,7 @@ PrefabInstance:
     - target: {fileID: 5088047501485374170, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: itemSO
       value: 
-      objectReference: {fileID: 11400000, guid: eb5437a0fb533a54da8adaea80ff68b6, type: 2}
+      objectReference: {fileID: 11400000, guid: c72c765b1a7044446938c1b42da36899, type: 2}
     - target: {fileID: 8973300343228966672, guid: eed87bd5ec9404e4f853bac1ae466e47, type: 3}
       propertyPath: m_Name
       value: Pot

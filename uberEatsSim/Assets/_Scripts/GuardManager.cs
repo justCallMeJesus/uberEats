@@ -13,6 +13,13 @@ public class GuardManager : MonoBehaviour
 
     public int currentExtraGuardAmount = 0;
 
+    public static GuardManager Instance;
+
+    private void Awake()
+    {
+        if(Instance == null) { Instance = this; } else { Destroy(Instance); }
+    }
+
     private void Start()
     {
         foreach (var guard in defaultGuards)

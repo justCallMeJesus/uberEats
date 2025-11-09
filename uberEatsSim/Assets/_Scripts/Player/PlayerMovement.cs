@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class PlayerMovement : MonoBehaviour
 {
 
-    [SerializeField] private float moveSpeed = 7f;
+    [SerializeField] public float moveSpeed = 7f;
+    private float interactionMoveSpeed = 0.5f;
     private float rotateSpeed = 25f;
 
     private GameInput gameInput;
@@ -14,6 +16,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Vehicle vehicle;
 
     private CharacterController cc;
+
+    private float originalSpeed;
+
+    
+
+    private void Awake()
+    {
+        originalSpeed = moveSpeed;
+    }
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +69,16 @@ public class PlayerMovement : MonoBehaviour
     public bool IsMoving()
     {
         return gameInput.playerInputActions.Player.Movement.ReadValue<Vector2>() != Vector2.zero;
+    }
+
+    public void SetInteractionMoveSpeed()
+    {
+        moveSpeed = interactionMoveSpeed;
+    }
+
+    public void SetNormalMoveSpeed()
+    {
+        moveSpeed = originalSpeed;
     }
 
 

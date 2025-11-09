@@ -24,6 +24,12 @@ public class ScooterCar :Vehicle
     {
         rb = GetComponent<Rigidbody>();
         maxSpeedSqr = maxSpeed * maxSpeed;
+        base.OnPlayerEntered += ScooterCar_OnPlayerEntered;
+    }
+
+    private void ScooterCar_OnPlayerEntered()
+    {
+        frontWheel.motorTorque = 300f;
     }
 
     private void FixedUpdate()

@@ -15,6 +15,8 @@ public class Item : MonoBehaviour
 
     public List<Shelf> possibleShelves = new List<Shelf>();
     private List<Shelf> selectedShelves = new List<Shelf>();
+
+    public bool ItemSelected = false;
         
 
 
@@ -53,7 +55,7 @@ public class Item : MonoBehaviour
             Debug.Log("player in range");
             if (CheckItemList())
             {
-                EnableHighlight();
+                EnableNormalHighlight();
 
             }
         }
@@ -67,21 +69,21 @@ public class Item : MonoBehaviour
         {
             Debug.Log("player left range");
         }
-        DisableHighlight();
+        DisableNormalHighlight();
     }
 
-    public void EnableHighlight()
+    public void EnableNormalHighlight()
     {
         Material[] newMaterials = new Material[2];
-        newMaterials[0] = Visual.material;
+        newMaterials[0] = Visual.sharedMaterial;
         newMaterials[1] = highlightMat;
         Visual.materials = newMaterials;
     }
 
-    public void DisableHighlight()
+    public void DisableNormalHighlight()
     {
         Material[] newMaterials = new Material[1];
-        newMaterials[0] = Visual.material;
+        newMaterials[0] = Visual.sharedMaterial;
         Visual.materials = newMaterials;
     }
 

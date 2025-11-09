@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
     {
         originalSelectedItems = selectedItems;
         givenTime = standardStartTime + addonTimePerItem * selectedItems.Count;
+        UIManager.Instance.SetTimeGiven(Mathf.RoundToInt(givenTime));
     }
 
     private void RemoveItemFromList(List<SelectedItems> list, int index)
@@ -253,11 +254,14 @@ public class GameManager : MonoBehaviour
         }
 
         timeElapsed = Time.time;
+        UIManager.Instance.SetTimePassed(Mathf.Round(timeElapsed * 10f) / 10f);
         
     }
 
     public void PlayerCaught()
     {
+        GuardManager.Instance.ChooseExtraGuards(1);
+
         int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
         int timePenalty = CalculateTimePenalty();
         int missedItemPenalty = CalculateMissedItemsPenalty(originalSelectedItems);
@@ -285,6 +289,16 @@ public class GameManager : MonoBehaviour
 
     public void PlayerLeft()
     {
+        if(collectedItems.Count > 0)
+        {
+            GuardManager.Instance.ChooseExtraGuards(2);
+        }
+        else
+        {
+            GuardManager.Instance.ChooseExtraGuards(1);
+        }
+        
+
         int previousGrandmaAngriness = gameSave.grandmaAngrinessScale;
         int timePenalty = CalculateTimePenalty();
         int missedItemPenalty = CalculateMissedItemsPenalty(originalSelectedItems);

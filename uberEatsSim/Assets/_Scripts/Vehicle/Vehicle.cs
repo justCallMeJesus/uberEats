@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -12,8 +13,10 @@ public class Vehicle : MonoBehaviour, IInteractable
     protected Vector3 interacterPositionOffset = Vector3.zero;
 
     private GameInput gameInput;
-    protected Player interacter;
+    public Player interacter;
     private CharacterController cc;
+
+    public event Action OnPlayerEntered;
 
     // Start is called before the first frame update
     protected void Start()
@@ -36,12 +39,17 @@ public class Vehicle : MonoBehaviour, IInteractable
 
     public void EnterVehicle(Player interacter)
     {
+        Vector3 playersPosition = interacter.transform.position;
+        Quaternion playersRotation = interacter.transform.rotation;
         interacter.transform.position = transform.position + interacterPositionOffset;
         interacter.transform.rotation = transform.rotation;
         interacter.transform.SetParent(transform);
+        transform.position = playersPosition;
+        transform.rotation = playersRotation;
         this.interacter = interacter;
         interacter.PlayerColliderEnabled(false);
         GameInput.instance.EnableVehicleControls();
+        OnPlayerEntered?.Invoke();
 
         gameInput.playerInputActions.Vehicle.Exit.performed += Exit_performed;
     }

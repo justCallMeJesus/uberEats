@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using static GameManager;
 using static UnityEditor.Progress;
 
 
@@ -27,7 +28,7 @@ public class ItemSpawnManager : MonoBehaviour
     public Shelf[] shelves;
     public List<Shelf> neededShelves = new List<Shelf>();
 
-    public SelectableItemsetsSO collection;
+    public SelectableItemsetsSO[] collection;
 
     public List<Item> selectedItems = new List<Item>();
 
@@ -38,7 +39,7 @@ public class ItemSpawnManager : MonoBehaviour
         shelves = FindObjectsOfType<Shelf>();
         foreach (Shelf shelf in shelves)
         {
-            foreach(var itemSet in collection.itemSets)
+            foreach(var itemSet in collection[0].itemSets)
             {
                 if(shelf.shelfSO == itemSet.shelfSO)
                 {
@@ -55,7 +56,7 @@ public class ItemSpawnManager : MonoBehaviour
     private void SelectItemsFromCollection()
     {
 
-        foreach (var itemSet in collection.itemSets)
+        foreach (var itemSet in collection[0].itemSets)
         {
             // foreach category in the collection of category
             for (int i = 0; i < itemSet.amount; i++)
@@ -82,6 +83,7 @@ public class ItemSpawnManager : MonoBehaviour
                 itemCollectorUI.AddItemRequirement(newItem);
             }
         }
+
         GameManager.Instance.ItemsSelected();
     }
 
