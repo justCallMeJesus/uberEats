@@ -722,7 +722,11 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
+<<<<<<< Updated upstream
         value: 1.18
+=======
+        value: 0
+>>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -731,6 +735,7 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 2.6
+<<<<<<< Updated upstream
         value: 1.18
         inSlope: 0
         outSlope: 0
@@ -762,6 +767,9 @@ AnimationClip:
       - serializedVersion: 3
         time: 2.6
         value: 0.11
+=======
+        value: 0
+>>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -782,6 +790,48 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
+<<<<<<< Updated upstream
+=======
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.6
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: RootT.y
+    path: 
+    classID: 95
+    script: {fileID: 0}
+    flags: 16
+  - serializedVersion: 2
+    curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 2.6
+>>>>>>> Stashed changes
         value: 0
         inSlope: 0
         outSlope: 0
@@ -933,7 +983,11 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
+<<<<<<< Updated upstream
       attribute: 8
+=======
+      attribute: 7
+>>>>>>> Stashed changes
       script: {fileID: 0}
       typeID: 95
       customType: 8
@@ -942,7 +996,11 @@ AnimationClip:
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
       path: 0
+<<<<<<< Updated upstream
       attribute: 7
+=======
+      attribute: 8
+>>>>>>> Stashed changes
       script: {fileID: 0}
       typeID: 95
       customType: 8
@@ -1685,7 +1743,11 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
+<<<<<<< Updated upstream
         value: 1.18
+=======
+        value: 0
+>>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1694,7 +1756,11 @@ AnimationClip:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 2.6
+<<<<<<< Updated upstream
         value: 1.18
+=======
+        value: 0
+>>>>>>> Stashed changes
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -1704,7 +1770,11 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+<<<<<<< Updated upstream
     attribute: RootT.y
+=======
+    attribute: RootT.x
+>>>>>>> Stashed changes
     path: 
     classID: 95
     script: {fileID: 0}
@@ -1734,7 +1804,11 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+<<<<<<< Updated upstream
     attribute: RootT.x
+=======
+    attribute: RootT.y
+>>>>>>> Stashed changes
     path: 
     classID: 95
     script: {fileID: 0}
