@@ -8,7 +8,7 @@ public class Shelf : MonoBehaviour
 
     protected static HashSet<Item> possibleItems = new HashSet<Item>();
 
-    protected static HashSet<Item> spawnedItems = new HashSet<Item>();
+    public static HashSet<Item> spawnedItems = new HashSet<Item>();
 
     public bool shelfChoosen = false;
 
@@ -37,5 +37,10 @@ public class Shelf : MonoBehaviour
     public virtual void FillEmptyShelf()
     {
 
+    }
+
+    public void ClearSpawnedItems()
+    {
+        spawnedItems.Clear();
     }
 }

@@ -1,27 +1,33 @@
+using System;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Tutorialroom : MonoBehaviour
 {
+
     public bool WKey = false;
-    public bool SKey = false;   
-    public bool AKey = false;   
-    public bool DKey = false;   
-    public GameObject MovementCheck;
-    public GameObject ScooterCheck;
-    
-    
+    public bool SKey = false;
+    public bool AKey = false;
+    public bool DKey = false;
+    public bool Movement = false;   
+
+    public GameObject DoorDoor;
+    public bool TutorialComplete = false;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         
-        MovementCheck.SetActive(true);
     }
-    
+
     // Update is called once per frame
     void Update()
     {
-        
+
         if (Input.GetKey(KeyCode.W))
         {
             WKey = true;
@@ -39,12 +45,19 @@ public class Tutorialroom : MonoBehaviour
             DKey = true;
 
         }
-        // if on scooter or someshi idfk then scooterchek.SetActive(true);
+            
         if (WKey && SKey && AKey && DKey)
         {
-            MovementCheck.SetActive(false);
+            Movement = true;
+            
+                
+
 
         }
+        
+
     }
+    
+
 }
 

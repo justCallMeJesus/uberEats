@@ -9,6 +9,7 @@ using System;
 
 public class GuardPlayerDetector : MonoBehaviour
 {
+    // THIS SCRIPT IS NO LONGER IN USE
     [SerializeField] private GuardAI guard;
     
     

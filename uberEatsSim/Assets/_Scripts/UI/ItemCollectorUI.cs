@@ -24,23 +24,23 @@ public class ItemCollectorUI : MonoBehaviour
 
     public void AddItemRequirement(ItemData data)
     {
-        // Check if a row for this item already exists in the set.
+        // Check if a row for this item already exists in the set
         if (displayedItems.Contains(data.itemName))
         {
-            // The item is already on the list, so do nothing.
+            // The item is already on the list, so do nothing
             return;
         }
 
-        // Item does not exist, so create a NEW row.
+        // Item does not exist, so create a new row
 
-        // Instantiate the prefab as a child of this container
+        // Instantiate the prefab as a child of this containe
         GameObject newRow = Instantiate(itemRowPrefab, transform);
         newRow.name = data.itemName + " Row";
 
         // Initialize the display script on the new row
         newRow.GetComponent<ItemRowDisplay>().Initialize(data.itemName, data.requiredCount);
 
-        // Add the item to our set so we don't duplicate it.
+        // Add the item to our set so we dont duplicate it
         displayedItems.Add(data.itemName);
     }
 

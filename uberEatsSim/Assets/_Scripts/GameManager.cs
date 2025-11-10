@@ -260,6 +260,8 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
+            Shelf allShelves = FindObjectOfType<Shelf>();
+            allShelves.ClearSpawnedItems();
             Scene currentScene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(currentScene.buildIndex);
         }
@@ -370,5 +372,8 @@ public class GameManager : MonoBehaviour
     {
         gameSave.grandmaAngrinessScale = 100;
         gameSave.extraSpawnedGuards.Clear();
+
+        
+        
     }
 }

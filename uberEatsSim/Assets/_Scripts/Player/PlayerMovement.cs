@@ -55,10 +55,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        // get Vector3 based on input vector2 and speed
         Vector2 inputVector = gameInput.playerInputActions.Player.Movement.ReadValue<Vector2>().normalized;
         
         Vector3 moveDirDistance = new Vector3(inputVector.x, 0f, inputVector.y) * Time.deltaTime * moveSpeed;
 
+        // move and rotate player if move vector not 0
         if (moveDirDistance.sqrMagnitude != 0) 
         {
             cc.Move(moveDirDistance);

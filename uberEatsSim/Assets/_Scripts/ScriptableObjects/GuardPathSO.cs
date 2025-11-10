@@ -7,6 +7,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New GuardPath", menuName = "Scriptable Objects/GuardPath")]
 public class GuardPathSO : ScriptableObject
 {
+    // THIS SCRIPT IS NO LONGER USED
     [Serializable]
     public struct GuardPath
     {

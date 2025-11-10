@@ -62,10 +62,6 @@ public class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.E))
-        //{
-        //    TryInteract();
-        //}
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.Log("space press started");
@@ -91,12 +87,6 @@ public class PlayerInteraction : MonoBehaviour
             UIManager.Instance.pickupBar.SetPickupBar(0);
             player.playerMovement.SetNormalMoveSpeed();
             pickingUp = false;
-            //if (currentlyCheckingOut)
-            //{
-            //    currentlyCheckingOut = false;
-
-
-            //}
         }
         if(!pickingUp)
         {
@@ -108,37 +98,10 @@ public class PlayerInteraction : MonoBehaviour
         
         FindClosestCheckout();
 
-        //if (player.playerMovement.IsMoving())
-        //{
-        //    timeHeld = 0f;
-        //}
-
     }
 
     private void TryInteract()
     {
-        //if (!Physics.Raycast(transform.position + new Vector3(0, interactionHeight, 0), transform.forward, out RaycastHit hit, interactionDistance, scooterLayer))
-        //{
-        //    return;
-        //}
-        //else
-        //{
-            
-        //}
-        
-        //Debug.Log(hit.collider.name);
-
-        //if (hit.collider.TryGetComponent(out IInteractable interactable))
-        //{
-        //    Debug.Log("interactable hit");
-        //    if (interactable.GetGameObject().TryGetComponent(out Vehicle vehicle))
-        //    {
-        //        Debug.Log("interacted with vehicle");
-        //        VehicleInteraction(vehicle);
-        //    }
-
-        //}
-        
         if(player.vehicleDetector.vehicles.Count > 0)
         {
             Debug.Log(player.vehicleDetector.vehicles.First().gameObject.name);
@@ -159,44 +122,67 @@ public class PlayerInteraction : MonoBehaviour
 
     private void TryPickUp()
     {
+        // check for checkout interaction
         if(interactableCheckout != null)
         {
             player.playerMovement.SetInteractionMoveSpeed();
             currentlyCheckingOut = true;
+
+            // increase time while holding
             timeHeld += Time.deltaTime;
             if(randomItemToCheckout != null)
             {
+                // adjust checkout indicator
                 float checkoutTime = randomItemToCheckout.pickupTime / 3;
                 UIManager.Instance.checkoutBar.SetCheckoutBar(Mathf.RoundToInt((timeHeld / checkoutTime) * 100));
+
+                // if held long enough while checkout in range
                 if (timeHeld > checkoutTime)
                 {
+                    // reset checkout indicator
                     UIManager.Instance.checkoutBar.SetCheckoutBar(0);
+                    // reset player speed
                     player.playerMovement.SetNormalMoveSpeed();
+                    // add checked out item to paid list
                     GameManager.Instance.AddItemToPaid(randomItemToCheckout);
+                    // reset random item to check out
                     randomItemToCheckout = null;
+                    // if there are still more  items to checkout, select new item randomly
                     if (GameManager.Instance.collectedItems.Count > 0)
                     {
                         randomItemToCheckout = GameManager.Instance.collectedItems[Random.Range(0, GameManager.Instance.collectedItems.Count)].itemSO;
                     }
+                    // reset time held
                     timeHeld = 0f;
                 }
             }
             
         }
+        // check for item interaction
         if(currentlyHighlightedItem != null)
         {
             pickingUp = true;
+            // reduce player speed while interacting
             player.playerMovement.SetInteractionMoveSpeed();
+            // increase time while holding E
             timeHeld += Time.deltaTime;
+            // adjust pickup indicator
             UIManager.Instance.pickupBar.SetPickupBar(Mathf.RoundToInt((timeHeld / currentlyHighlightedItem.itemSO.pickupTime) * 100));
+            // if held E for itms pickupTime, pick up
             if (timeHeld > currentlyHighlightedItem.itemSO.pickupTime)
             {
                 pickingUp = false;
+                // reset indicator
                 UIManager.Instance.pickupBar.SetPickupBar(0);
+                // reset speed
                 player.playerMovement.SetNormalMoveSpeed();
+                // remove from selected items
                 GameManager.Instance.ReduceItemCount(currentlyHighlightedItem.itemSO);
+                // remove from items we can interact with
                 interactableItems.Remove(currentlyHighlightedItem);
+                // destroy item gameobject
                 Destroy(currentlyHighlightedItem.gameObject);
+                // reduce players speed based on objects weight (aka pickup time)
                 player.playerMovement.ReduceMaxSpeedBy(currentlyHighlightedItem.itemSO.pickupTime / 10);
                 timeHeld = 0f;
             }
@@ -268,12 +254,11 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         Item closestObject = null;
-        float minDistance = Mathf.Infinity; // Initialize with a very large number
+        float minDistance = Mathf.Infinity; 
 
-        // Get the player's position once for efficiency
+
         Vector3 playerPosition = transform.position;
 
-        // Iterate through all potential targets
         foreach (Item target in interactableItems)
         {
             if(Physics.Raycast(transform.position, target.transform.position - transform.position, out RaycastHit hit, (target.transform.position - transform.position).magnitude, interactionBlockLayers))
@@ -286,21 +271,16 @@ public class PlayerInteraction : MonoBehaviour
                 continue;
             }
 
-            // 1. Calculate the squared distance. 
-            //    Squared distance (Vector3.sqrMagnitude) is faster than regular distance (Vector3.Distance or Vector3.magnitude) 
-            //    because it avoids calculating the square root. We only care about comparing *relative* distances.
+
             float currentDistanceSquared = (target.transform.position - playerPosition).sqrMagnitude;
 
-            // 2. Check if this distance is the smallest one found so far
             if (currentDistanceSquared < minDistance)
             {
-                // 3. Update the minimum distance and store a reference to the closest object
                 minDistance = currentDistanceSquared;
                 closestObject = target;
             }
         }
 
-        // Return the object that had the smallest distance
         return closestObject;
     }
 

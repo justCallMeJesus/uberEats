@@ -331,14 +331,6 @@ public class GuardAI : MonoBehaviour
 
         if (agent.remainingDistance < 0.5)
         {
-            //if(transform.rotation != startRotation)
-            //{
-            //    transform.rotation = Quaternion.Slerp(transform.rotation, startRotation, Time.deltaTime * rotationSpeed);
-            //}
-            //else
-            //{
-                
-            //}
             SetNextPatrolDestination();
             ChangeAlertState(AlertState.Patrolling);
         }
@@ -464,36 +456,4 @@ public class GuardAI : MonoBehaviour
         // Apply the property block back to the renderer
         fieldRenderer.SetPropertyBlock(propertyBlock);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private void OnDrawGizmos()
-    {
-        Color color = new Color(0, 1, 0, 0.3f);
-        if (alertState == AlertState.Suspicious)
-        {
-            color = Color.Lerp(new Color(0, 1, 0, 0.3f), new Color(1, 0, 0, 0.3f), alertLevel / 100f);
-        }
-        else if (alertState == AlertState.Alerted)
-        {
-            color = new Color(1, 0, 0, 0.3f);
-        }
-
-
-        Handles.color = color;
-        Handles.DrawSolidArc(transform.position, transform.up, Quaternion.AngleAxis(-fovAngle / 2f, transform.up) * transform.forward, fovAngle, fovDistance);
-    }
-
-
 }

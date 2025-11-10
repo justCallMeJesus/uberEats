@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using static GameManager;
-using static UnityEditor.Progress;
 
 
 public static class IListExtensions
@@ -37,7 +36,10 @@ public class ItemSpawnManager : MonoBehaviour
 
     private void Start()
     {
+        // get collection for current round
         int currentRound = Mathf.Clamp(gamesave.currentRound,0,collection.Length-1);
+
+        // select relevant shelves based on selected collection
         shelves = FindObjectsOfType<Shelf>();
         foreach (Shelf shelf in shelves)
         {
@@ -49,9 +51,15 @@ public class ItemSpawnManager : MonoBehaviour
                 }
             }
         }
+        // reset shelves on load
+        Shelf allShelves = FindObjectOfType<Shelf>();
+        allShelves.ClearSpawnedItems();
 
+        // select items randomly
         SelectItemsFromCollection();
+        // spawn them
         SpawnSelectedItems();
+        // spawn the unused items
         FillEmptyShelves();
     }
 

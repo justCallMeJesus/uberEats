@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 public class Exit : MonoBehaviour
 {
     public Tutorialroom tutorialroom;
+    public bool TutorialComplete = false;
+    public GameObject ShoppingList;
+    public GameObject Door;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -15,6 +18,16 @@ public class Exit : MonoBehaviour
     void Update()
     {
         
+        if (ShoppingList.activeSelf == false)
+        {
+            TutorialComplete = true;
+        }
+        if (TutorialComplete)
+        {
+            Door.transform.rotation = Quaternion.Euler(0, 45, 0);
+
+
+        }
     }
     private void OnTriggerEnter(Collider other)
     {

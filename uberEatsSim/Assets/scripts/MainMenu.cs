@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField] private GameSaves gameSaves;
+
     public void PlayGame()
 
     {
+        ResetGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
@@ -15,6 +18,13 @@ public class MainMenu : MonoBehaviour
     {
         UnityEngine.Debug.Log("QUIT!");
         Application.Quit();
+    }
+
+
+    private void ResetGame()
+    {
+        gameSaves.grandmaAngrinessScale = 100;
+        gameSaves.currentRound = 0;
     }
 }
 

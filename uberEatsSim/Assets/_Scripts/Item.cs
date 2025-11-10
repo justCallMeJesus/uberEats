@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class Item : MonoBehaviour
 {
@@ -23,30 +22,7 @@ public class Item : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Item thisItem = this;
-        //possibleShelves = FindObjectsOfType<Shelf>().Where(shelf => shelf.shelfSO.items.Contains(this)).ToList();
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void Spawn()
-    {
-        //int randomIndex = Random.Range(0, possibleShelves.Count-1);
-
-        //Shelf randomItem = possibleShelves[randomIndex];
-
-        //possibleShelves.Remove(randomItem);
-
-        //selectedShelves.Add(randomItem);
-    }
 
     private void OnTriggerEnter(Collider other)
     {
